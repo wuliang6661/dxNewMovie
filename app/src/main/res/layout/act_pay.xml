@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:background="#0d0d0d"
+        android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -18,16 +18,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_top"
-            android:text="总价："
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_big" />
+            android:text="确认支付："
+            android:textColor="#161616"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/order_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¥ 70"
-            android:textColor="#32b8e8"
+            android:text="¥ 0"
+            android:textColor="#EA5B43"
             android:textSize="17dp"
             android:textStyle="bold" />
 
@@ -45,14 +45,13 @@
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <Button
                 android:id="@+id/submit_button"
                 android:layout_width="102dp"
-                android:layout_height="33dp"
-                android:layout_marginRight="@dimen/margin_top"
+                android:layout_height="match_parent"
                 android:background="@drawable/button_bule"
                 android:gravity="center"
                 android:text="确认支付"

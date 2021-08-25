@@ -1,7 +1,5 @@
 package com.myp.cinema.ui.membercard;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.CardBO;
 import com.myp.cinema.mvp.BasePresenterImpl;

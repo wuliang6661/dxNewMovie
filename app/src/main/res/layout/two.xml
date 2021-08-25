@@ -12,7 +12,7 @@
         android:background="@drawable/button_jine1"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        >
+        android:visibility="gone">
     <EditText
         android:id="@+id/et"
         android:textColor="#4c4c4c"

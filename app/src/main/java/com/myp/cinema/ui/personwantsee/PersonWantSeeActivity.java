@@ -1,15 +1,10 @@
 package com.myp.cinema.ui.personwantsee;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,7 +22,6 @@ import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
-import com.myp.cinema.widget.swiferefresh.SwipeRefreshView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;

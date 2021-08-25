@@ -173,7 +173,7 @@ public class WebClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String request) {
-//        view.loadUrl(request);
+        view.loadUrl(request);
         return false;
     }
 

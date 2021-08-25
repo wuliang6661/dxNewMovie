@@ -2,7 +2,9 @@ package com.myp.cinema.ui.moviessession;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +48,15 @@ public class SessionDateAdapter extends RecyclerView.Adapter<SessionDateAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         final String date = sessionBOs.get(position).getDate();
         if (distion == position) {
-            holder.dateText.setBackgroundResource(R.drawable.session_text_check);
-            holder.dateText.setTextColor(Color.parseColor("#ffffff"));
+            holder.selectView.setVisibility(View.VISIBLE);
+            holder.dateText.setTextColor(Color.parseColor("#161616"));
+            holder.dateText.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
+            holder.dateText.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.dateText.setBackgroundResource(R.drawable.session_text_nocheck);
-            holder.dateText.setTextColor(Color.parseColor("#666666"));
+            holder.selectView.setVisibility(View.GONE);
+            holder.dateText.setTextColor(Color.parseColor("#161616"));
+            holder.dateText.setTextSize(TypedValue.COMPLEX_UNIT_DIP,15);
+            holder.dateText.setTypeface(null, Typeface.NORMAL);
         }
         holder.dateText.setText(TimeUtils.string2WeekAll(date));
         holder.dateText.setTag(position);
@@ -74,10 +80,12 @@ public class SessionDateAdapter extends RecyclerView.Adapter<SessionDateAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView dateText;
+        View selectView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             dateText = (TextView) itemView.findViewById(R.id.date_text);
+            selectView = itemView.findViewById(R.id.selectView);
         }
     }
 

@@ -30,6 +30,8 @@ public class CinemaBo implements Serializable {
     private String distance;//距离
     private String totalFee;   //服务费
 
+    private String message;
+
     public String getTotalFee() {
         return totalFee;
     }
@@ -142,4 +144,11 @@ public class CinemaBo implements Serializable {
         this.distance = distance;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

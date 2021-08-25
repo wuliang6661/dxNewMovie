@@ -8,14 +8,14 @@
     <color name="act_bg01">#f0f0f0</color>
     <color name="act_bg_white">#ffffff</color>
 
-    <color name="act_header_bg_black">#0d0d0d</color>
+    <color name="act_header_bg_black">#373737</color>
 
     <color name="white">#FFFFFF</color>
     <color name="text_my">#EB5E3A</color>
-    <color name="text_big">#1a1a1a</color>
+    <color name="text_big">#1A1A1A</color>
     <color name="text_center">#1a1a1a</color>
     <color name="text_small">#666666</color>
-    <color name="text_style01">#999999</color>
+    <color name="text_style01">#312927</color>
     <color name="text_style02">#333333</color>
 
     <color name="line_bg">#e6e6e6</color>

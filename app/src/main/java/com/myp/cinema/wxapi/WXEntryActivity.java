@@ -1,36 +1,12 @@
 package com.myp.cinema.wxapi;
 
 import android.content.Intent;
-import android.os.Bundle;
-
-import com.google.gson.Gson;
-import com.myp.cinema.config.LocalConfiguration;
-import com.myp.cinema.entity.UserWxBO;
-import com.myp.cinema.util.LogUtils;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import cn.sharesdk.wechat.utils.WechatHandlerActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import android.content.Intent;
+
 import android.widget.Toast;
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
-import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 
 /**
  * Created by wuliang on 2017/3/3.o

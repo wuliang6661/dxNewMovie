@@ -1,12 +1,8 @@
 package com.myp.cinema.ui.personcollect;
 
-import android.util.Log;
-import android.view.View;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
-import com.myp.cinema.mvp.MVPBaseFragment;
 
 import java.util.List;
 

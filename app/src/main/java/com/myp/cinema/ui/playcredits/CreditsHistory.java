@@ -16,6 +16,7 @@ import com.myp.cinema.ui.userlogin.LoginActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.List;
 
@@ -31,10 +32,10 @@ import rx.Subscriber;
 public class CreditsHistory extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
     @Bind(R.id.list)
     ListView list;
-    @Bind(R.id.swipe)
-    SwipeRefreshLayout swipe;
     @Bind(R.id.none_layout)
     LinearLayout noneLayout;
 
@@ -50,9 +51,6 @@ public class CreditsHistory extends BaseActivity implements SwipeRefreshLayout.O
         super.onCreate(savedInstanceState);
         goBack();
         setTitle("兑换记录");
-
-        invitionSwipeRefresh(swipe);
-        swipe.setOnRefreshListener(this);
         getCreditsOrder();
     }
 
@@ -82,12 +80,11 @@ public class CreditsHistory extends BaseActivity implements SwipeRefreshLayout.O
         HttpInterfaceIml.creditsOrder().subscribe(new Subscriber<List<ShopOrderBO>>() {
             @Override
             public void onCompleted() {
-                swipe.setRefreshing(false);
+
             }
 
             @Override
             public void onError(Throwable e) {
-                swipe.setRefreshing(false);
                 if ("未登录".equals(e.getMessage())) {
                     Intent intent = new Intent(CreditsHistory.this, LoginActivity.class);
                     startActivityForResult(intent, 1);
@@ -100,10 +97,8 @@ public class CreditsHistory extends BaseActivity implements SwipeRefreshLayout.O
             public void onNext(List<ShopOrderBO> s) {
                 if (s == null || s.size() == 0) {
                     noneLayout.setVisibility(View.VISIBLE);
-                    swipe.setVisibility(View.GONE);
                 } else {
                     noneLayout.setVisibility(View.GONE);
-                    swipe.setVisibility(View.VISIBLE);
                     shopOrderBOs = s;
                     setAdapter();
                 }

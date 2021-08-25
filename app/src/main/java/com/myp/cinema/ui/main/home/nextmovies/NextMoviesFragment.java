@@ -3,7 +3,6 @@ package com.myp.cinema.ui.main.home.nextmovies;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,7 +117,9 @@ public class NextMoviesFragment extends MVPBaseFragment<NextMoviesContract.View,
 
     public void setCinemaBo(CinemaBo cinemaBo) {
         this.cinemaBo = cinemaBo;
-        mPresenter.loadMoviesSoon(cinemaBo.getCinemaId());
+        if (mPresenter != null) {
+            mPresenter.loadMoviesSoon(cinemaBo.getCinemaId());
+        }
     }
 
     @Override
@@ -128,7 +129,7 @@ public class NextMoviesFragment extends MVPBaseFragment<NextMoviesContract.View,
     }
     @Override
     public void onRequestError(String msg) {
-        LogUtils.showToast(msg);
+//        LogUtils.showToast(msg);
     }
 
     @Override

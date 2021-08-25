@@ -17,10 +17,11 @@ public class ItemModel implements Serializable {
     //是否免费的标志
     public Object dataa;
     public boolean isFree;
-    public ItemModel(int type, Object data, Object dataa,boolean isFree) {
+    public String activity;//充值活动
+    public ItemModel(int type, Object data, Object dataa,boolean isFree,String activity) {
         this.type = type;
         this.data = data;
         this.dataa = dataa;
-
+        this.activity = activity;
     }
 }

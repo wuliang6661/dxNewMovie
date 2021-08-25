@@ -34,6 +34,8 @@ public class CardMessageActivity extends BaseActivity {
     RelativeLayout cardQrCode;
     @Bind(R.id.my_balance)
     RelativeLayout mybalance;
+    @Bind(R.id.rlCard)
+    RelativeLayout rlCard;
     private CardBO cardBO;
 
     @Override
@@ -61,6 +63,7 @@ public class CardMessageActivity extends BaseActivity {
                 Intent intent = new Intent(CardMessageActivity.this, accountbalance.class);
                 intent.putExtra("cardPrice", code);
                 intent.putExtra("getCardNumber", cardBO.getCardNumber());
+                intent.putExtra("cardLevel",cardBO.getCardLevel());
                 startActivity(intent);
             }
         });
@@ -75,6 +78,15 @@ public class CardMessageActivity extends BaseActivity {
         cardNum.setText("NO." + cardBO.getCardNumber());
         cardPrice.setText("¥ " + code);
         cardJifen.setText(cardBO.getAvailableJifen());
+        if (cardBO.getCardLevel().contains("至尊卡")){
+            rlCard.setBackground(getResources().getDrawable(R.drawable.kapian_perfect));
+        }else if (cardBO.getCardLevel().contains("战疫卡")){
+            rlCard.setBackground(getResources().getDrawable(R.drawable.war_card));
+        }else if (cardBO.getCardLevel().contains("集团99看过瘾")){
+            rlCard.setBackground(getResources().getDrawable(R.drawable.jiu_card));
+        }else {
+            rlCard.setBackground(getResources().getDrawable(R.drawable.kapian));
+        }
     }
 
     @Override

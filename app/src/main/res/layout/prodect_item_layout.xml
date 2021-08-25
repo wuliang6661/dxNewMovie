@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F2F2F2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@mipmap/prodect_bg_bottom"
+        android:visibility="visible">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlFood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:visibility="visible">
+        <ImageView
+            android:id="@+id/ivFoodType"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/food_yes"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/prodectList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/white">
+        </android.support.v7.widget.RecyclerView>
+
+        <ImageView
+            android:id="@+id/ivProdectState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ticket_refund"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlBottom"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@mipmap/prodect_bg_top"
+        android:visibility="visible">
+    </RelativeLayout>
+</LinearLayout>

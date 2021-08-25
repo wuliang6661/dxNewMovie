@@ -25,4 +25,14 @@ public class MD5 {
         }
         return builder.toString().toLowerCase();
     }
+    /**
+     * 接口参数mac生成（签名）
+     * @param apiName
+     * @return
+     */
+    public static String sign(String apiName,String time){
+        String sign = "HLBW2018SHAPPLET" + apiName + "SH076WZ80D98X5G2" + time;
+        return strToMd5Low32(sign);
+    }
+
 }

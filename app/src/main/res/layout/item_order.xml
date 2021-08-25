@@ -38,14 +38,18 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/movies_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="拆弹专家"
+                    android:text="拆拆弹专家弹专家拆aaaa弹专家拆弹专家"
                     android:textColor="@color/text_big"
                     android:textSize="@dimen/text_big" />
 
                 <TextView
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:id="@+id/movies_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

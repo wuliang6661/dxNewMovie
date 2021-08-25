@@ -21,17 +21,18 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.myp.cinema.R;
 import com.myp.cinema.base.MyApplication;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.ConfirmPayBO;
+import com.myp.cinema.entity.LockSeatsBO;
+import com.myp.cinema.entity.SubmitPrdectOrderBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.ui.FragmentPaerAdapter;
 import com.myp.cinema.ui.pay.cardpay.CardPayFragment;
 import com.myp.cinema.ui.pay.mentpay.MentPayFragment;
 import com.myp.cinema.util.AppManager;
-import com.myp.cinema.util.StringUtils;
+import com.myp.cinema.util.TimeConstants;
 import com.myp.cinema.util.TimeUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -71,8 +72,9 @@ public class PayActivity extends MVPBaseActivity<PayContract.View, PayPresenter>
     CardPayFragment cardPayFragment;
     MentPayFragment mentPayFragment;
 
-    OrderBO orderBO;
-    long downTime;   //订单结束时间
+    ConfirmPayBO orderBO;
+    LockSeatsBO lockSeatsBO;
+    SubmitPrdectOrderBO submitPrdectOrderBO;
 
     private int confrim = Integer.MAX_VALUE;  //判断从哪个页面进入 1 从提交订单页面进入
 
@@ -90,22 +92,36 @@ public class PayActivity extends MVPBaseActivity<PayContract.View, PayPresenter>
         super.onCreate(savedInstanceState);
         setTitle("付款");
         Bundle bundle = getIntent().getExtras();
-        orderBO = (OrderBO) bundle.getSerializable("order");
-        MyApplication.orderBO = orderBO;
-        size = bundle.getInt("size");
         confrim = bundle.getInt("confrim", Integer.MAX_VALUE);
-        if (StringUtils.isEmpty(orderBO.getTicketOriginPrice())) {
-            orderPrice.setText("¥ " + bundle.getString("price", ""));
-        } else {
-            orderPrice.setText("¥ " + orderBO.getTicketOriginPrice());
-        }
         if (confrim == 1) {
+            orderBO = MyApplication.confirmPayBO;
+            lockSeatsBO = (LockSeatsBO) bundle.getSerializable("lockSeatsBO");
+            MyApplication.orderBO = lockSeatsBO;
+            size = bundle.getInt("size");
+            orderPrice.setText(String.format("￥ %s",lockSeatsBO.getPayPrice()));
             otherPrice.setText("(含服务费¥" + MyApplication.cinemaBo.getTotalFee() + "/张)");
+            inittion();
+            if (orderBO != null) {
+                startTimeDown(TimeUtils.getTimeSpan(TimeUtils.millis2String(
+                        orderBO.getOrderExpireSecond() * 1000, "yyyy-MM-dd HH:mm:ss"),
+                        TimeUtils.millis2String(TimeUtils.getNowTimeMills()),
+                        TimeConstants.MSEC));
+            }else {
+                startTimeDown(TimeUtils.getTimeSpan(TimeUtils.millis2String(
+                        lockSeatsBO.getOrderExpireSecond() * 1000, "yyyy-MM-dd HH:mm:ss"),
+                        TimeUtils.millis2String(TimeUtils.getNowTimeMills()),
+                        TimeConstants.MSEC));
+            }
         } else {
-            otherPrice.setText("(含服务费¥" + orderBO.getPoundage() + "/张)");
+            submitPrdectOrderBO = (SubmitPrdectOrderBO) bundle.getSerializable("order");
+            orderPrice.setText(String.format("￥ %s",submitPrdectOrderBO.getPayPrice()));
+            otherPrice.setVisibility(View.GONE);
+            inittion();
+            startTimeDown(TimeUtils.getTimeSpan(TimeUtils.millis2String(
+                    submitPrdectOrderBO.getOrderExpireSecond()*1000,"yyyy-MM-dd HH:mm:ss"),
+                    TimeUtils.millis2String(TimeUtils.getNowTimeMills()),
+                    TimeConstants.MSEC));
         }
-        inittion();
-        startTimeDown();
     }
 
     /**
@@ -115,9 +131,17 @@ public class PayActivity extends MVPBaseActivity<PayContract.View, PayPresenter>
         fragments = new ArrayList<>();
         cardPayFragment = new CardPayFragment();
         mentPayFragment = new MentPayFragment();
-        mentPayFragment.setOrderBO(orderBO);
+        if (orderBO != null) {
+            mentPayFragment.setOrderBO(orderBO);
+        }else {
+            mentPayFragment.setProdectBO(submitPrdectOrderBO);
+        }
         mentPayFragment.setSize(size);
-        cardPayFragment.setOrderBO(orderBO);
+        if (orderBO != null) {
+            cardPayFragment.setOrderBO(orderBO);
+        }else {
+            cardPayFragment.setProdectBO(submitPrdectOrderBO);
+        }
         fragments.add(cardPayFragment);
         fragments.add(mentPayFragment);
         FragmentPaerAdapter adapter = new FragmentPaerAdapter(getSupportFragmentManager(), fragments);
@@ -132,9 +156,8 @@ public class PayActivity extends MVPBaseActivity<PayContract.View, PayPresenter>
     /**
      * 启动订单倒计时
      */
-    private void startTimeDown() {
-        downTime = Long.parseLong(orderBO.getOrderExpireSecond()) * 1000;
-        timer = new CountDownTimer(downTime - new Date().getTime(), 1000) {
+    private void startTimeDown(long downTime) {
+        timer = new CountDownTimer(downTime, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 countDownTime.setText(TimeUtils.millis2String(millisUntilFinished, "mm:ss"));

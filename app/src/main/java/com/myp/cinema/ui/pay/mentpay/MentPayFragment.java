@@ -18,20 +18,27 @@ import android.widget.TextView;
 import com.alipay.sdk.app.PayTask;
 import com.myp.cinema.R;
 import com.myp.cinema.config.LocalConfiguration;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.ConfirmPayBO;
 import com.myp.cinema.entity.PayBO;
 import com.myp.cinema.entity.PayResult;
 import com.myp.cinema.entity.ResuBo;
+import com.myp.cinema.entity.SubmitPrdectOrderBO;
 import com.myp.cinema.entity.WXPayBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
 import com.myp.cinema.ui.orderconfrim.OrderSurcessActivity;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.ToastUtils;
 import com.myp.cinema.wxapi.WXUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 
 /**
  * Created by wuliang on 2017/6/1.
@@ -57,7 +64,8 @@ public class MentPayFragment extends MVPBaseFragment<MentPayContract.View,
     @Bind(R.id.duihuanjuan)
     ImageView duihuanjuan;
 
-    private OrderBO orderBO;
+    private ConfirmPayBO orderBO;
+    private SubmitPrdectOrderBO submitPrdectOrderBO;
     private int size;
 
     @Nullable
@@ -85,10 +93,22 @@ public class MentPayFragment extends MVPBaseFragment<MentPayContract.View,
         ButterKnife.unbind(this);
     }
 
-
-    public void setOrderBO(OrderBO orderBO) {
+    /**
+     * 电影票订单
+     * @param orderBO
+     */
+    public void setOrderBO(ConfirmPayBO orderBO) {
         this.orderBO = orderBO;
     }
+
+    /**
+     * 食品订单
+     * @param submitPrdectOrderBO
+     */
+    public void setProdectBO(SubmitPrdectOrderBO submitPrdectOrderBO){
+        this.submitPrdectOrderBO = submitPrdectOrderBO;
+    }
+
     public void setSize(int size) {
         this.size = size;
     }
@@ -100,29 +120,42 @@ public class MentPayFragment extends MVPBaseFragment<MentPayContract.View,
                 if (orderBO != null) {
                     showProgress("加载中...");
                     mPresenter.loadWeChatPay(orderBO.getOrderNum());
+                }else {
+                    showProgress("加载中...");
+                    mPresenter.loadWeChatPay(submitPrdectOrderBO.getOrderNum());
                 }
                 break;
             case R.id.pay_zhifubao:
                 if (orderBO != null) {
                     showProgress("加载中...");
                     mPresenter.loadAliPay(orderBO.getOrderNum());
+                }else {
+                    showProgress("加载中...");
+                    mPresenter.loadAliPay(submitPrdectOrderBO.getOrderNum());
                 }
                 break;
             case R.id.text_dh:
                 String coupon = edittext.getText().toString().trim();
                 if(coupon==null||coupon.equals("")){
                     LogUtils.showToast("请输入兑换劵");
-                }else {
-                    showProgress("加载中...");
-                    mPresenter.loadcardPay(orderBO.getOrderNum(),coupon);
+                }else{
+                    if (orderBO != null) {
+                        showProgress("加载中...");
+                        mPresenter.loadcardPay(orderBO.getOrderNum(), coupon);
+                    }else {
+                        showProgress("加载中...");
+                        mPresenter.loadcardPay(submitPrdectOrderBO.getOrderNum(), coupon);
+                    }
                 }
                 break;
             case R.id.pay_zhifuba:
                 if(size>1){
                     linersr.setVisibility(View.GONE);
+                    ToastUtils.showShortToast("一张券只能兑换一张电影票");
                 }else {
-                duihuanjuan.animate().rotation(90);
-                linersr.setVisibility(View.VISIBLE);
+                    duihuanjuan.animate().rotation(90);
+                    linersr.setVisibility(View.VISIBLE);
+
                }
 
                 break;
@@ -148,15 +181,33 @@ public class MentPayFragment extends MVPBaseFragment<MentPayContract.View,
 
     @Override
     public void getWxPay(WXPayBO wxPayBO) {
-        LocalConfiguration.orderNum = orderBO.getOrderNum();
-        WXUtils.payWX(wxPayBO);
+        if (orderBO != null) {
+            LocalConfiguration.orderNum = orderBO.getOrderNum();
+            WXUtils.payWX(wxPayBO);
+            LocalConfiguration.ordertype = 0;
+        }else {
+            LocalConfiguration.orderNum = submitPrdectOrderBO.getOrderNum();
+            WXUtils.payWX(wxPayBO);
+            LocalConfiguration.ordertype = 1;
+        }
     }
 
     @Override
-    public void getcardPay(ResuBo resuBo) {
-            Bundle bundle = new Bundle();
-            bundle.putString("order", orderBO.getOrderNum());
-            gotoActivity(OrderSurcessActivity.class, bundle, false);
+    public void getcardPay(ResponseBody resuBo) throws JSONException, IOException {
+        String s = new String(resuBo.bytes());
+        JSONObject jsonObject = new JSONObject(s);
+        int status = jsonObject.optInt("status");
+        if (status == 1) {
+            if (orderBO != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString("order", orderBO.getOrderNum());
+                gotoActivity(OrderSurcessActivity.class, bundle, false);
+            }else {
+                Bundle bundle = new Bundle();
+                bundle.putString("order", submitPrdectOrderBO.getOrderNum());
+                gotoActivity(OrderSurcessActivity.class, bundle, false);
+            }
+        }
     }
 
     /**
@@ -192,9 +243,15 @@ public class MentPayFragment extends MVPBaseFragment<MentPayContract.View,
             String resultStatus = payResult.getResultStatus();
             // 判断resultStatus 为9000则代表支付成功
             if (TextUtils.equals(resultStatus, "9000")) {
-                Bundle bundle = new Bundle();
-                bundle.putString("order", orderBO.getOrderNum());
-                gotoActivity(OrderSurcessActivity.class, bundle, false);
+                if (orderBO != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("order", orderBO.getOrderNum());
+                    gotoActivity(OrderSurcessActivity.class, bundle, false);
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("order", submitPrdectOrderBO.getOrderNum());
+                    gotoActivity(OrderSurcessActivity.class, bundle, false);
+                }
             } else {
                 LogUtils.showToast("支付失败");
             }

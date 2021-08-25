@@ -54,6 +54,15 @@ public class UserBO implements Serializable {
     private String commentNum;
     private String wantseeNum;
     private String watchedNum;
+    private String alertPhoto;
+
+    public String getAlertPhoto() {
+        return alertPhoto;
+    }
+
+    public void setAlertPhoto(String alertPhoto) {
+        this.alertPhoto = alertPhoto;
+    }
 
     public String getValid() {
         return valid;

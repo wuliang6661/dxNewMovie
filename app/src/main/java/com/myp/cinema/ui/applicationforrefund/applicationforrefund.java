@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
+import com.myp.cinema.entity.OrderDetailBO;
 import com.myp.cinema.entity.RefundBO;
-import com.myp.cinema.entity.OrderBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.util.AppManager;
 import com.myp.cinema.util.CimemaUtils;
@@ -33,7 +33,7 @@ public class applicationforrefund extends MVPBaseActivity<tuipiaoshenqingContrac
     private TextView tijiao;
     private String id;
     private String cinemaId;
-    private OrderBO orderBO;
+    private OrderDetailBO orderBO;
     @Bind(R.id.order_number)
     TextView ordernumber;
     @Bind(R.id.total)
@@ -50,7 +50,7 @@ public class applicationforrefund extends MVPBaseActivity<tuipiaoshenqingContrac
     TextView moviestime;
     @Bind(R.id.movies_seat)
     TextView moviesSeat;
-    @Bind(R.id.movies_num)
+    @Bind(R.id.movies_numm)
     TextView moviesnum;
     @Bind(R.id.refundHandFee)
     TextView refundhandFee;
@@ -70,7 +70,7 @@ public class applicationforrefund extends MVPBaseActivity<tuipiaoshenqingContrac
         setTitle("申请退票");
         cinemaId =  getIntent().getStringExtra("cinemaId");
         id =  getIntent().getStringExtra("id");
-        orderBO = (OrderBO) getIntent().getExtras().getSerializable("order");
+        orderBO = (OrderDetailBO) getIntent().getExtras().getSerializable("order");
         ordernumber.setText("订单号："+orderBO.getOrderNum());
         total.setText("总价：￥"+orderBO.getTicketRealPrice());
         if (StringUtils.isEmpty(orderBO.getDxMovie().getPicture())) {
@@ -88,7 +88,7 @@ public class applicationforrefund extends MVPBaseActivity<tuipiaoshenqingContrac
             moviestime.setText("");
         }
         moviesSeat.setText(CimemaUtils.getSeats(orderBO.getSeats()));
-        moviesnum.setText(orderBO.getTicketNum());
+        moviesnum.setText(String.valueOf(orderBO.getTicketNum()));
         mPresenter.refundinfo(id);
         tijiao = (TextView)findViewById(R.id.tijiao);
         tijiao.setOnClickListener(new View.OnClickListener() {
@@ -109,26 +109,26 @@ public class applicationforrefund extends MVPBaseActivity<tuipiaoshenqingContrac
 
     @Override
     public void onRequestError(String msg) {
+        stopProgress();
         LogUtils.showToast(msg);
 
     }
 
     @Override
     public void onRequestEnd() {
-
+        stopProgress();
     }
 
     @Override
     public void getrefundinfo(RefundBO refundBO) {
-            refundhandFee.setText("每张"+String.valueOf(refundBO.getData().getRefundHandFee())+"元");
-            refundFee.setText(String.valueOf(refundBO.getData().getRefundFee())+"元");
-
-
+        refundhandFee.setText("每张"+String.valueOf(refundBO.getData().getRefundHandFee())+"元");
+        refundFee.setText(String.valueOf(refundBO.getData().getRefundFee())+"元");
 
     }
 
     @Override
     public void getrefund(RefundBO orderMessage) {
+        stopProgress();
         if(orderMessage.getStatus()==1){
 //            stopProgress();
             tijiao.setVisibility(View.GONE);

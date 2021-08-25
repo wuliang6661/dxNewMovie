@@ -3,7 +3,6 @@ package com.myp.cinema.ui.userforwordpass;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
 
 /**
  * MVPPlugin

@@ -1,6 +1,5 @@
 package com.myp.cinema.ui.phonecode2two;
 
-import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
@@ -16,6 +15,6 @@ public class phonecode2twoContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void thirdregist(String mobile,String pwd,String header,String nickname,String gender,String wxUserId,String wbUserId,String qqUserId);
+        void thirdregist(String cinemaId,String mobile,String pwd,String header,String nickname,String gender,String wxUserId,String wbUserId,String qqUserId);
     }
 }

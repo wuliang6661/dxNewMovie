@@ -15,8 +15,8 @@ public class RegisterPresenter extends BasePresenterImpl<RegisterContract.View>
         implements RegisterContract.Presenter {
 
     @Override
-    public void loadVersition(String phone) {
-        HttpInterfaceIml.userVerification(phone, "register").subscribe(new Subscriber<String>() {
+    public void loadVersition(String phone,String verifycode) {
+        HttpInterfaceIml.userVerification(phone, "register",verifycode).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
 
@@ -39,8 +39,8 @@ public class RegisterPresenter extends BasePresenterImpl<RegisterContract.View>
     }
 
     @Override
-    public void loadRegisterUser(String phone, String password, String version, String sex) {
-        HttpInterfaceIml.userRegister(phone, password, version, sex).subscribe(new Subscriber<UserBO>() {
+    public void loadRegisterUser(String cinemaId,String phone, String password, String version, String sex) {
+        HttpInterfaceIml.userRegister(cinemaId,phone, password, version, sex).subscribe(new Subscriber<UserBO>() {
             @Override
             public void onCompleted() {
 

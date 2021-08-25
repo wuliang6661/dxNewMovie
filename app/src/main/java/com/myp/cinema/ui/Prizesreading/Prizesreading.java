@@ -1,24 +1,19 @@
 package com.myp.cinema.ui.Prizesreading;
 
 import com.myp.cinema.R;
-import com.myp.cinema.base.MyApplication;
-import com.myp.cinema.entity.ShopBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.ui.WebViewActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
-import com.myp.cinema.widget.swiferefresh.SwipeRefreshVie;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;

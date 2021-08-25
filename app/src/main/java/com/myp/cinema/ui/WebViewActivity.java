@@ -20,7 +20,6 @@ import com.myp.cinema.widget.ShareDialog;
 import com.tencent.smtt.sdk.WebView;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,12 +74,18 @@ public class WebViewActivity extends BaseWebActivity
         }else {
             fenxiangimg.setVisibility(View.VISIBLE);
             title=getIntent().getExtras().getString("title");//pic
+
             logo=getIntent().getExtras().getString("pic");
             content =getIntent().getExtras().getString("description");
             url = getIntent().getExtras().getString("url");
+            Log.d("分享的内容", "onCreate: "+title);
+            Log.d("分享的内容", "onCreate: "+logo);
+            Log.d("分享的内容", "onCreate: "+content);
+            Log.d("分享的内容", "onCreate: "+url);
             initWebView(webview);
             extraHeaders = new HashMap<String, String>();
             extraHeaders.put("accessType", "app_android");
+            Log.d("H555", "onCreate: "+url);
             webview.loadUrl(url,extraHeaders);
         }
 

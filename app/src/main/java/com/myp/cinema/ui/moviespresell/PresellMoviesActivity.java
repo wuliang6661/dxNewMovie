@@ -13,6 +13,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ import com.myp.cinema.ui.VideoPlayerActivity;
 import com.myp.cinema.ui.moviessession.SessionActivity;
 import com.myp.cinema.util.ImageUtils;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.ScreenUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.widget.ShareDialog;
 import com.myp.cinema.widget.bigimage.ImagPagerUtil;
@@ -100,6 +102,8 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
     LinearLayout commentLayout;
     @Bind(R.id.content_layout)
     RelativeLayout contentLayout;
+    @Bind(R.id.titleBg)
+    View titleBg;
 
     boolean isunfold;    // 是否展开，默认未展开
     MoviesByCidBO moviesByCidBO;
@@ -137,6 +141,11 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
      * 为页面设置值
      */
     private void setData() {
+        ViewGroup.LayoutParams params = movieImg.getLayoutParams();
+        params.height = (int) (ScreenUtils.getScreenWidth() * 0.42);
+        params.width = (int) (ScreenUtils.getScreenWidth() * 0.3);
+        movieImg.setLayoutParams(params);
+
         commentLayout.setVisibility(View.GONE);
         if (StringUtils.isEmpty(moviesByCidBO.getUniqueName())) {
             moviesName.setText(moviesByCidBO.getMovieName());
@@ -167,8 +176,12 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
                 break;
         }
         moviesNarrate.setText(moviesByCidBO.getIntroduction());
-        if (moviesByCidBO.getDxVideos() != null && moviesByCidBO.getDxVideos().size() != 0) {
-            Picasso.with(this).load(moviesByCidBO.getDxVideos().get(0).getPicture()).into(videoImg);
+        if (moviesByCidBO.getDxVideos() != null && moviesByCidBO.getDxVideos().size() != 0 ) {
+            if(!StringUtils.isEmpty(moviesByCidBO.getDxVideos().get(0).getPicture())){
+                Picasso.with(this).load(moviesByCidBO.getDxVideos().get(0).getPicture()).into(videoImg);
+            }else {
+                video.setVisibility(View.GONE);
+            }
         } else {
             video.setVisibility(View.GONE);
         }
@@ -222,8 +235,9 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 Bitmap newBitmap = ImageUtils.fastBlur((Bitmap) msg.obj, 0.3f, 25, true);
-                if (newBitmap != null && movieImgBac != null) {
-                    movieImgBac.setBackground(new BitmapDrawable(newBitmap));
+                if (newBitmap != null && titleBg != null) {
+//                    movieImgBac.setBackground(new BitmapDrawable(newBitmap));
+                    titleBg.setBackground(new BitmapDrawable(newBitmap));
                 }
             }
         }
@@ -278,6 +292,11 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
                 ImageView personImg = (ImageView) holder.getView(R.id.person_img);
                 TextView personName = (TextView) holder.getView(R.id.person_name);
                 TextView personPost = (TextView) holder.getView(R.id.person_post);
+                ViewGroup.LayoutParams params = personImg.getLayoutParams();
+                params.height = (int) (ScreenUtils.getScreenWidth() * 0.35);
+                params.width = (int) (ScreenUtils.getScreenWidth() * 0.25);
+                personImg.setLayoutParams(params);
+
                 personName.setText(o.getName());
                 if (position + 1 <= moviesByCidBO.getDxDirectors().size()) {
                     personPost.setText("导演");
@@ -328,6 +347,13 @@ public class PresellMoviesActivity extends MVPBaseActivity<PresellMoviesContract
             public void convert(LGViewHolder holder, String o, int position) {
                 holder.getView(R.id.bofang).setVisibility(View.GONE);
                 ImageView video_img = (ImageView) holder.getView(R.id.video_img);
+
+                ViewGroup.LayoutParams params = video_img.getLayoutParams();
+                params.height = (int) (ScreenUtils.getScreenWidth() * 0.28);
+                params.width = (int) (ScreenUtils.getScreenWidth() * 0.5);
+                video_img.setLayoutParams(params);
+
+
                 if (StringUtils.isEmpty(o)) {
                     video_img.setImageResource(R.color.act_bg01);
                 } else {

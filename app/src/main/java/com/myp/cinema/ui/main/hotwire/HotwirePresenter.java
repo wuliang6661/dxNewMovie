@@ -1,7 +1,5 @@
 package com.myp.cinema.ui.main.hotwire;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.HotWireBO;
 import com.myp.cinema.mvp.BasePresenterImpl;

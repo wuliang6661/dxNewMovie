@@ -31,5 +31,6 @@ public class LocalConfiguration {
     public static final String DOWNLOAD_PATH = "/data/data/com.myp.cinema/download";
     public static final String appFileName = "cinema.apk";  //版本
     public static int isVoucher = -1;
+    public static int ordertype = -1;//订单类型  0 电影票订单  1 食品订单
 
 }

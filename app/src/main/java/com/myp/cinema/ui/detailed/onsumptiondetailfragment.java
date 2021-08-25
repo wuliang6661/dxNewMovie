@@ -60,9 +60,15 @@ public class onsumptiondetailfragment extends MVPBaseFragment<onsumptiondetailCo
                 R.layout.item_onsumption, data) {
             @Override
             protected void convert(ViewHolder helper, SumptionBo item, int position) {
-                helper.setText(R.id.shijian, item.getPayDate());
-                helper.setText(R.id.chongzhijine,"-"+ String.valueOf(item.getTicketRealPrice())+"元");
-                helper.setText(R.id.card_num,"共计"+ String.valueOf(item.getTicketNum())+"张");
+                if (item.getOrderType() != null && item.getOrderType().equals("1")){//卖品
+                    helper.getView(R.id.card_num).setVisibility(View.GONE);
+                    helper.setText(R.id.shijian, item.getPayDate());
+                    helper.setText(R.id.chongzhijine, "-" + String.valueOf(item.getTicketRealPrice()) + "元");
+                }else {
+                    helper.setText(R.id.shijian, item.getPayDate());
+                    helper.setText(R.id.chongzhijine, "-" + String.valueOf(item.getTicketRealPrice()) + "元");
+                    helper.setText(R.id.card_num, "共计" + String.valueOf(item.getTicketNum()) + "张");
+                }
 
             }
         };

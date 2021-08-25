@@ -4,11 +4,9 @@ import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.Hashtable;
 

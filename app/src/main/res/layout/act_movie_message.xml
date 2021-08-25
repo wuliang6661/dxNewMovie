@@ -13,17 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_alignParentBottom="true"
-        android:background="#0d0d0d"
+        android:background="@drawable/change_color_blue"
         android:gravity="center"
+        android:textStyle="bold"
         android:text="选座购票"
-        android:textColor="#32b8e8"
-        android:textSize="16dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <include android:id="@+id/header"
+        layout="@layout/header_layout02"/>
 
     <com.myp.cinema.widget.pulltozoomview.PullToZoomScrollViewEx
         android:id="@+id/scollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/submit_button"
+        android:layout_below="@id/header"
         android:scrollbars="none" />
 
 

@@ -1,39 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+        <ImageView
+            android:id="@+id/sign_img"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_top"
+            android:layout_marginTop="34dp"
+            android:background="@drawable/member_qiandao" />
 
-    <ImageView
-        android:id="@+id/sign_img"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_top"
-        android:layout_marginTop="34dp"
-        android:background="@drawable/member_qiandao" />
+        <ImageButton
+            android:id="@+id/settingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/new_setting_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="13dp"
+            android:layout_marginTop="44dp"
+            android:background="@null"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal">
+
+            <com.meg7.widget.CircleImageView
+                android:id="@+id/person_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/new_default_header" />
+
+            <TextView
+                android:id="@+id/person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="点击登录或注册"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:layout_marginStart="16dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/signBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:background="@drawable/sign_bg"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/signImg"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                android:src="@mipmap/new_sign_no"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="6dp"/>
+
+            <LinearLayout
+                android:id="@+id/signedLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今日"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已签"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/notSignLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="签到"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="得好礼"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
 
-    <com.meg7.widget.CircleImageView
-        android:id="@+id/person_img"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_centerInParent="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/defalt_person_img" />
+        </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/person_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/person_img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_top"
-        android:text="点击登录或注册"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_big" />
+    </RelativeLayout>
 
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5">
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:background="#00ffffff">
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/my_item_bg">
+
+            <RelativeLayout
+                android:id="@+id/rlTicketOrder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/new_ticket_icon" />
+
+                    <TextView
+                        android:id="@+id/newPersonComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="1dp"
+                        android:text="影票订单"
+                        android:textColor="#1A1A1A"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/ticketPoint"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/image_oval"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="34dp"
+                android:background="@color/act_bg01"
+                android:layout_gravity="center"/>
+
+            <RelativeLayout
+                android:id="@+id/rlProductOrder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayout">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/new_product_icon" />
+
+                    <TextView
+                        android:id="@+id/productOrderTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="小食订单"
+                        android:layout_marginTop="1dp"
+                        android:textColor="#1A1A1A"
+                        android:textSize="11sp"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/productPoint"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/image_oval"
+                    android:gravity="center"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="34dp"
+                android:background="@color/act_bg01"
+                android:layout_gravity="center"/>
+
+            <RelativeLayout
+                android:id="@+id/rlCoupon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/new_coupon_icon" />
+
+                    <TextView
+                        android:id="@+id/newPersonWantSee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="优惠券"
+                        android:layout_marginTop="1dp"
+                        android:textColor="#1A1A1A"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/couponPoint"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/image_oval"
+                    android:gravity="center"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="34dp"
+                android:background="@color/act_bg01"
+                android:layout_gravity="center"/>
+
+            <RelativeLayout
+                android:id="@+id/rlCard"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/new_card_icon" />
+
+                    <TextView
+                        android:id="@+id/newPersonCollect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="会员卡"
+                        android:layout_marginTop="1dp"
+                        android:textColor="#1A1A1A"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/cardPoint"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/image_oval"
+                    android:gravity="center"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

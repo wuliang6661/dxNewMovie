@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardList"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="29dp"/>
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:id="@+id/notUseBtn"
+        android:layout_below="@id/cardList"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/not_use_bg"
+        android:text="不使用会员卡"
+        android:textColor="#EA5B43"
+        android:textSize="13sp"/>
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:id="@+id/submitBtn"
+        android:layout_below="@id/cardList"
+        android:layout_marginTop="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/submitbtn_bg"
+        android:text="提交"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:layout_marginBottom="19dp"/>
+</RelativeLayout>

@@ -1,24 +1,35 @@
 package com.myp.cinema.api;
 
+import com.myp.cinema.entity.ActivityBO;
 import com.myp.cinema.entity.AppVersionBO;
-import com.myp.cinema.entity.Bean;
+import com.myp.cinema.entity.BaseBO;
 import com.myp.cinema.entity.CardBO;
 import com.myp.cinema.entity.CinemaBo;
 import com.myp.cinema.entity.CommentBO;
+import com.myp.cinema.entity.ConfirmPayBO;
+import com.myp.cinema.entity.CouponDetailBO;
 import com.myp.cinema.entity.CriticBO;
 import com.myp.cinema.entity.FavourBO;
 import com.myp.cinema.entity.FeedBackListBO;
 import com.myp.cinema.entity.GameBO;
+import com.myp.cinema.entity.HotSellBO;
+import com.myp.cinema.entity.HotSellBannerBO;
 import com.myp.cinema.entity.HotWireBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.entity.LunBoAndBO;
 import com.myp.cinema.entity.LunBoBO;
 import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.entity.MoviesCommentBO;
 import com.myp.cinema.entity.MoviesSoonBO;
+import com.myp.cinema.entity.OpenCardBO;
 import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.OrderDetailBO;
 import com.myp.cinema.entity.OrderNumBO;
 import com.myp.cinema.entity.PayBO;
 import com.myp.cinema.entity.PayCardBO;
+import com.myp.cinema.entity.PicVerificBO;
+import com.myp.cinema.entity.ProdectBO;
+import com.myp.cinema.entity.RecentBean;
 import com.myp.cinema.entity.RechBo;
 import com.myp.cinema.entity.RefundBO;
 import com.myp.cinema.entity.ResuBo;
@@ -26,8 +37,10 @@ import com.myp.cinema.entity.SessionBO;
 import com.myp.cinema.entity.ShareBO;
 import com.myp.cinema.entity.ShopBO;
 import com.myp.cinema.entity.ShopOrderBO;
+import com.myp.cinema.entity.SubmitPrdectOrderBO;
 import com.myp.cinema.entity.SumptionBo;
 import com.myp.cinema.entity.UserBO;
+import com.myp.cinema.entity.UserCouponBO;
 import com.myp.cinema.entity.WXPayBO;
 import com.myp.cinema.entity.preferentialnumberBo;
 import com.myp.cinema.entity.threelandingBo;
@@ -39,6 +52,7 @@ import com.myp.cinema.util.rx.RxHelper;
 import java.util.List;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -88,17 +102,24 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     /**
      * 用户注册
      */
-    public static Observable<UserBO> userRegister(String phone, String password, String verification,
+    public static Observable<UserBO> userRegister(String cinemaId,String phone, String password, String verification,
                                                   String sex) {
-        return getService().userRegister(phone, password, verification, sex)
+        return getService().userRegister(cinemaId,phone, password, verification, sex)
                 .compose(RxResultHelper.<UserBO>httpRusult());
     }
 
     /**
      * 获取验证码
      */
-    public static Observable<String> userVerification(String phone, String verificationType) {
-        return getService().userVerfication(phone, verificationType).compose(RxResultHelper.<String>httpRusult());
+    public static Observable<String> userVerification(String phone, String verificationType,String verifycode) {
+        return getService().userVerfication(phone, verificationType,verifycode).compose(RxResultHelper.<String>httpRusult());
+    }
+
+    /**
+     * 获取图文验证码
+     */
+    public static Observable<PicVerificBO> picVerification() {
+        return getService().picVerfication().compose(RxResultHelper.<PicVerificBO>httpRusult());
     }
 
     /**
@@ -110,14 +131,14 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     /**
      * 第三方登录验证用户
      */
-    public static Observable<threelandingBo> phonebinding(String phone,String wxUserId,String wbUserId,String qqUserId, String versition) {
-        return getService().phonebinding(phone,wxUserId,wbUserId ,qqUserId,versition).compose(RxHelper.<threelandingBo>httpRusult());
+    public static Observable<threelandingBo> phonebinding(String header,String phone,String wxUserId,String wbUserId,String qqUserId, String versition) {
+        return getService().phonebinding(header,phone,wxUserId,wbUserId ,qqUserId,versition).compose(RxHelper.<threelandingBo>httpRusult());
     }
     /**
      * 第三方注册
      */
-    public static Observable<threelandingBo> thirdregist(String mobile,String password,String header,String nickName,String gender,String wxUserId,String wbUserId,String qqUserId) {
-        return getService().thirdregist(mobile,password,header,nickName,gender,wxUserId,wbUserId,qqUserId).compose(RxHelper.<threelandingBo>httpRusult());
+    public static Observable<threelandingBo> thirdregist(String cinemaId,String mobile,String password,String header,String nickName,String gender,String wxUserId,String wbUserId,String qqUserId) {
+        return getService().thirdregist(cinemaId,mobile,password,header,nickName,gender,wxUserId,wbUserId,qqUserId).compose(RxHelper.<threelandingBo>httpRusult());
     }
     /**
      * 修改密码
@@ -161,6 +182,43 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
         return getService().cardUser().compose(RxResultHelper.<List<CardBO>>httpRusult());
     }
 
+    /**
+     *  获取开通会员卡需要充值的金额
+     */
+    public static Observable<OpenCardBO> getCardPay(String cinemaId) {
+        return getService().getCardPay(cinemaId).compose(RxResultHelper.<OpenCardBO>httpRusult());
+    }
+
+    /**
+     *  获取开通会员卡说明
+     */
+    public static Observable<String> getCardNotice(String cinemaId) {
+        return getService().getCardNotice(cinemaId).compose(RxResultHelper.<String>httpRusult());
+    }
+
+    /**
+     *  开通会员卡(支付宝)
+     */
+    public static Observable<PayBO> bindCard(String openCard,String cinemaId,String cardNum,String password,String username,
+                                             String sex,String birthday,String idcard,String rechargeMoney) {
+        return getService().bindCard(openCard,cinemaId,cardNum,password,username,sex,birthday,idcard,rechargeMoney).compose(RxResultHelper.<PayBO>httpRusult());
+    }
+
+    /**
+     *  开通会员卡(微信)
+     */
+    public static Observable<WXPayBO>bindCardWechat(String openCard,String cinemaId,String cardNum,String password,String username,
+                                                    String sex,String birthday,String idcard,String rechargeMoney) {
+        return getService().bindCardWechat(openCard,cinemaId,cardNum,password,username,sex,birthday,idcard,rechargeMoney).compose(RxResultHelper.<WXPayBO>httpRusult());
+    }
+
+    /**
+     * 解绑会员卡
+     */
+    public static Observable<BaseBO> unBindCard(String id) {
+        return getService().unBindCard(id).compose(RxHelper.<BaseBO>httpRusult());
+    }
+
 
     /**
      * 获取影院列表
@@ -190,6 +248,15 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     }
 
     /**
+     * 获取活动
+     * @param cinemaId
+     * @return
+     */
+    public static Observable<ActivityBO> getActivity(String cinemaId) {
+        return getService().getActivity(cinemaId).compose(RxResultHelper.<ActivityBO>httpRusult());
+    }
+
+    /**
      * 获取正在热映影片
      */
     public static Observable<List<MoviesByCidBO>> moviesHot(String cinameId) {
@@ -209,30 +276,80 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     public static Observable<List<MoviesByCidBO>> moviesCid(String cinemaId) {
         return getService().moviesByCid(cinemaId).compose(RxResultHelper.<List<MoviesByCidBO>>httpRusult());
     }
+    /**
+     * 获取热卖小食
+     */
+    public static Observable<List<HotSellBO>> getHotSell(String cinemaCode) {
+        return getService().getHotSell(cinemaCode).compose(RxResultHelper.<List<HotSellBO>>httpRusult());
+    }
 
+    /**
+     * 获取热卖小食轮播图
+     */
+    public static Observable<List<HotSellBannerBO>> getBanner(String cinemaCode, String category) {
+        return getService().getBanner(cinemaCode,category).compose(RxResultHelper.<List<HotSellBannerBO>>httpRusult());
+    }
+
+    /**
+     * 修改食品价格
+     */
+    public static Observable<ProdectBO> getOrderPrice(String cinemaId,String merchandiseinfo,String merTicketId) {
+        return getService().getOrderPrice(cinemaId,merchandiseinfo,merTicketId).compose(RxResultHelper.<ProdectBO>httpRusult());
+    }
+
+    /**
+     * 提交食品订单
+     */
+    public static Observable<SubmitPrdectOrderBO> submitProdectOrder(String cinemaId,String merchandiseinfo,String phone,String memo,String cinemaNumber,String merTicketId) {
+        return getService().submitProdectOrder(cinemaId,merchandiseinfo,phone,memo,cinemaNumber,merTicketId).compose(RxResultHelper.<SubmitPrdectOrderBO>httpRusult());
+    }
 
     /**
      * 提交订单
      */
-    public static Observable<OrderBO> orderSubmit(
-                                                  String orderName,      //联系人姓名（可不传）
-                                                  String seats,              //座位连接
-                                                  String ticketNum,       //票数量
-                                                  String ticketOriginPrice,   //总价
-                                                  String cinemaNumber,     //广电总局影院唯一编码
-                                                  String hallId,              //鼎新影厅id
-                                                  String playId,               //鼎新场次id
-                                                  String cineMovieNum,     //广电总局规定的影片全国唯一编码
-                                                  String seatId) {
-        return getService().orderSubmit( orderName, seats, ticketNum, ticketOriginPrice,
-                cinemaNumber, hallId, playId, cineMovieNum, seatId).compose(RxResultHelper.<OrderBO>httpRusult());
+    public static Observable<ConfirmPayBO> orderSubmit(String cinemaId,String orderName, String seats, String seatId, String ticketOriginPrice, String ticketNum,
+                                                       String cinemaNumber, String hallId, String playId, String cineMovieNum, String seatTicketId,
+                                                       String merchandiseInfo, String merTicketId,String orderPhone,String memo,String preferPrice,
+                                                       String globalPreferPrice,String globalCanBuyNum) {
+        return getService().orderSubmit( cinemaId,orderName, seats, seatId,ticketOriginPrice,ticketNum,cinemaNumber,hallId,
+                playId,cineMovieNum,seatTicketId,merchandiseInfo,merTicketId,orderPhone,memo,preferPrice,globalPreferPrice,globalCanBuyNum).compose(RxResultHelper.<ConfirmPayBO>httpRusult());
     }
+
+    /**
+     * 提交订单(0元支付)
+     */
+    public static Observable<ConfirmPayBO> orderZeroSubmit(String cinemaId,String orderName, String seats, String seatId, String ticketOriginPrice, String ticketNum,
+                                                       String cinemaNumber, String hallId, String playId, String cineMovieNum, String seatTicketId,
+                                                       String merchandiseInfo, String merTicketId,String orderPhone,String memo,String preferPrice,
+                                                       String globalPreferPrice,String globalCanBuyNum) {
+        return getService().orderZeroSubmit( cinemaId,orderName, seats, seatId,ticketOriginPrice,ticketNum,cinemaNumber,hallId,
+                playId,cineMovieNum,seatTicketId,merchandiseInfo,merTicketId,orderPhone,memo,preferPrice,globalPreferPrice,globalCanBuyNum).compose(RxResultHelper.<ConfirmPayBO>httpRusult());
+    }
+    /**
+     * 修改订单价格
+     */
+    public static Observable<ResponseBody> modifyOrderPrice(String cinemaId,String partnerPrice,String marketPrice,String activityPriceNum,String ticketNum,
+                                                           String beforeTicketPrice,String totalDisprice,String payPrice,String seatTicketId,
+                                                           String merTicketId,String merchandiseInfo,String appUserId,String preferPrice,
+                                                           String globalPreferPrice,String globalCanBuyNum,String payType) {
+        return getService().modifyOrderPrice( cinemaId,partnerPrice, marketPrice, activityPriceNum, ticketNum,
+                beforeTicketPrice, totalDisprice, payPrice, seatTicketId, merTicketId,merchandiseInfo,appUserId,preferPrice,globalPreferPrice,globalCanBuyNum,payType).compose(RxHelper.<ResponseBody>httpRusult());
+    }
+
+    /**
+     * 校验观影券
+     */
+    public static Observable<ResponseBody> verifyCoupon(String coupon,String orderNum) {
+        return getService().verifyCoupon(coupon,orderNum).compose(RxHelper.<ResponseBody>httpRusult());
+    }
+
+
 
     /**
      * 查询订单列表
      */
-    public static Observable<List<OrderBO>> orderList(String orderType, String orderPage) {
-        return getService().orserList(orderType, orderPage, pageNum).compose(RxResultHelper.<List<OrderBO>>httpRusult());
+    public static Observable<List<LockSeatsBO>> orderList(String orderType,String payStatus,int orderPage,String orderSize) {
+        return getService().orserList(orderType, payStatus, orderPage,orderSize).compose(RxResultHelper.<List<LockSeatsBO>>httpRusult());
     }
 
 
@@ -246,16 +363,16 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     /**refund
      * 查询订单详情
      */
-    public static Observable<Bean> orderMessage(String id, String cinemaId) {
-        return getService().orderMessage(id,cinemaId).compose(RxHelper.<Bean>httpRusult());
+    public static Observable<OrderDetailBO> orderMessage(String id, String cinemaId) {
+        return getService().orderMessage(id,cinemaId).compose(RxResultHelper.<OrderDetailBO>httpRusult());
     }
 
 
     /**
      * 查询单个订单详情
      */
-    public static Observable<OrderBO> orderQuery(String orderNum) {
-        return getService().orderQuery(orderNum).compose(RxResultHelper.<OrderBO>httpRusult());
+    public static Observable<OrderBO> orderQuery(String appUserId ,String orderNum) {
+        return getService().orderQuery(appUserId,orderNum).compose(RxResultHelper.<OrderBO>httpRusult());
     }
 
 
@@ -278,6 +395,16 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     }
 
     /**
+     * 锁座(下单)
+     */
+    public static Observable<ResponseBody> lockSeats(String orderName, String seats, String seatId, String ticketOriginPrice, String ticketNum,
+                                                    String cinemaNumber, String hallId, String playId, String cineMovieNum,String preferPrice,
+                                                    String globalPreferPrice,String globalCanBuyNum) {
+        return getService().lockSeats(orderName,seats,seatId,ticketOriginPrice,ticketNum,cinemaNumber,hallId,playId,cineMovieNum,preferPrice
+                                      ,globalPreferPrice,globalCanBuyNum).compose(RxHelper.<ResponseBody>httpRusult());
+    }
+
+    /**
      * 支付宝支付
      */
     public static Observable<PayBO> payAlipay(String orderNum) {
@@ -294,8 +421,8 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     /**
      * 会员卡支付
      */
-    public static Observable<ResuBo> loadcardPay(String orderNum,String coupon) {
-        return getService().loadcardPay(orderNum,coupon).compose(RxResultHelper.<ResuBo>httpRusult());
+    public static Observable<ResponseBody> loadcardPay(String orderNum,String coupon) {
+        return getService().loadcardPay(orderNum,coupon).compose(RxHelper.<ResponseBody>httpRusult());
     }
     /**
      * 获取会员卡支付价格
@@ -335,6 +462,12 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
      */
     public static Observable<List<SumptionBo>> loadcosumption(String pageNo, String cardNum) {
         return getService().loadcosumption(cardNum,pageNo, "20").compose(RxResultHelper.<List<SumptionBo>>httpRusult());
+    }
+    /**loadcosumption
+     * 获取最近消费记录
+     */
+    public static Observable<List<RecentBean>> loadRecentCosumption(String pageNo, String cardNum) {
+        return getService().loadRecentCosumption(cardNum,pageNo, "20").compose(RxResultHelper.<List<RecentBean>>httpRusult());
     }
     /**loadcosumption
      * 获取单个电影评论
@@ -394,6 +527,21 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     public static Observable<UserBO> memberRecord(String appUserId) {
         return getService().memberRecords(appUserId).compose(RxResultHelper.<UserBO>httpRusult());
     }
+
+    /**
+     * 获取个人中心四个记录数量
+     */
+    public static Observable<ResponseBody> getPersonStatus(String appUserId) {
+        return getService().getPersonStatus(appUserId).compose(RxHelper.<ResponseBody>httpRusult());
+    }
+
+    /**
+     * 获取个人德信币
+     */
+    public static Observable<ResponseBody> getCoins(String appUserId) {
+        return getService().getCoins(appUserId).compose(RxHelper.<ResponseBody>httpRusult());
+    }
+
 
     /**
      * 获取自己的电影评论记录
@@ -484,15 +632,30 @@ public static Observable<threelandingBo> userLoginid(String wxUserId, String wbU
     /**
      * 我的优惠券
      */
-    public static Observable<String> personCoupon() {
-        return getService().personCoupon().compose(RxResultHelper.<String>httpRusult());
+    public static Observable<List<UserCouponBO>> personCoupon(int pageNo, int pageSize) {
+        return getService().personCoupon(pageNo,pageSize).compose(RxResultHelper.<List<UserCouponBO>>httpRusult());
+    }
+
+    /**
+     * 我的优惠券数量
+     */
+    public static Observable<String> personCouponNum() {
+        return getService().personCouponNum().compose(RxResultHelper.<String>httpRusult());
+    }
+
+
+    /**
+     * 我的优惠券
+     */
+    public static Observable<CouponDetailBO> personCouponDetail(String id) {
+        return getService().personCouponDetail(id).compose(RxResultHelper.<CouponDetailBO>httpRusult());
     }
 
     /**
      * 添加优惠券
      */
-    public static Observable<String> personAddCoupon() {
-        return getService().personAddCoupon().compose(RxResultHelper.<String>httpRusult());
+    public static Observable<ResponseBody> personAddCoupon(String code) {
+        return getService().personAddCoupon(code).compose(RxHelper.<ResponseBody>httpRusult());
     }
     /**
      * 意见反馈列表

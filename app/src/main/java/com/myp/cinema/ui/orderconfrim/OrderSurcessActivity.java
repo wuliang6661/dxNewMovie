@@ -14,13 +14,17 @@ import android.widget.TextView;
 import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.base.BaseActivity;
+import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.jpush.MessageEvent;
 import com.myp.cinema.ui.personorder.ordermessage.OrderMessageActivity;
 import com.myp.cinema.util.AppManager;
 import com.myp.cinema.util.CimemaUtils;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.StringUtils;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import rx.Subscriber;
@@ -74,10 +78,13 @@ public class OrderSurcessActivity extends BaseActivity implements View.OnClickLi
 
         String orderNum = getIntent().getExtras().getString("order");
         showProgress("加载中...");
-        queryOrder(orderNum);
+        if (MyApplication.user != null) {
+            queryOrder(String.valueOf(MyApplication.user.getId()), orderNum);
+        }
         backHome.setOnClickListener(this);
         orderMessage.setOnClickListener(this);
         goBack.setOnClickListener(this);
+        EventBus.getDefault().post(new MessageEvent("prodectClear", "yes"));//发给SortDetailFragment
     }
 
     /**
@@ -94,8 +101,8 @@ public class OrderSurcessActivity extends BaseActivity implements View.OnClickLi
             moviesTime.setText("");
         }
         moviesSeat.setText(CimemaUtils.getSeats(orderBO.getSeats()));
-        moviesNum.setText(orderBO.getTicketNum());
-        orderPrice.setText("¥" + orderBO.getTicketRealPrice());
+        moviesNum.setText(String.valueOf(orderBO.getTicketNum()));
+        orderPrice.setText("¥" + orderBO.getPayPrice());
         orderNum.setText("订单号：" + orderBO.getOrderNum());
         if (StringUtils.isEmpty(orderBO.getDxMovie().getPicture())) {
             moviesImg.setImageResource(R.color.act_bg01);
@@ -108,8 +115,8 @@ public class OrderSurcessActivity extends BaseActivity implements View.OnClickLi
     /**
      * 查询单个订单
      */
-    private void queryOrder(String orderNum) {
-        HttpInterfaceIml.orderQuery(orderNum).subscribe(new Subscriber<OrderBO>() {
+    private void queryOrder(String appUserId ,String orderNum) {
+        HttpInterfaceIml.orderQuery(appUserId,orderNum).subscribe(new Subscriber<OrderBO>() {
             @Override
             public void onCompleted() {
                 stopProgress();
@@ -141,7 +148,8 @@ public class OrderSurcessActivity extends BaseActivity implements View.OnClickLi
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("order", orderBO);
                 bundle.putString("cinemaId", orderBO.getCinemaId());
-                bundle.putString("id", orderBO.getId());
+                bundle.putString("id", String.valueOf(orderBO.getId()));
+                bundle.putString("cinemaId",orderBO.getCinemaId());
                 gotoActivity(OrderMessageActivity.class, bundle, false);
                 break;
         }

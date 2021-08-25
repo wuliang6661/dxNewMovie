@@ -2,7 +2,6 @@ package com.myp.cinema.ui.personread.persongrade;
 
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
 
 /**
  * MVPPlugin

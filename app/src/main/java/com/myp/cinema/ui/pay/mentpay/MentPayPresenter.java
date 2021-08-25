@@ -1,13 +1,16 @@
 package com.myp.cinema.ui.pay.mentpay;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.PayBO;
 import com.myp.cinema.entity.ResuBo;
 import com.myp.cinema.entity.WXPayBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -71,7 +74,7 @@ public class MentPayPresenter extends BasePresenterImpl<MentPayContract.View>
     }
     @Override
     public void loadcardPay(String orderNum,String coupon) {
-        HttpInterfaceIml.loadcardPay(orderNum,coupon).subscribe(new Subscriber<ResuBo>() {
+        HttpInterfaceIml.loadcardPay(orderNum,coupon).subscribe(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
                 if (mView == null)
@@ -87,10 +90,16 @@ public class MentPayPresenter extends BasePresenterImpl<MentPayContract.View>
             }
 
             @Override
-            public void onNext(ResuBo s) {
+            public void onNext(ResponseBody s) {
                 if (mView == null)
                     return;
-                mView.getcardPay(s);
+                try {
+                    mView.getcardPay(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

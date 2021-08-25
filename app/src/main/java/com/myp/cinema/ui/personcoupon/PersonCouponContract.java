@@ -1,8 +1,15 @@
 package com.myp.cinema.ui.personcoupon;
 
+import com.myp.cinema.entity.UserCouponBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.ResponseBody;
 
 /**
  * MVPPlugin
@@ -12,11 +19,15 @@ import com.myp.cinema.mvp.BaseView;
 public class PersonCouponContract {
     interface View extends BaseRequestView {
 
-        void getCoupon(Object object);
+        void getCoupon(List<UserCouponBO> couponList);
+
+        void getAddResult(ResponseBody responseBody) throws IOException, JSONException;
     }
 
     interface Presenter extends BasePresenter<View> {
 
-        void loadPersonCoupon();
+        void loadPersonCoupon(int pageNo,int pageSize);
+
+        void addPersonCoupon(String code);
     }
 }

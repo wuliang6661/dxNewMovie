@@ -1,26 +1,18 @@
 package com.myp.cinema.ui.personcollect;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.myp.cinema.R;
-import com.myp.cinema.base.BaseFragment;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
-import com.myp.cinema.ui.WebViewActivity;
-import com.myp.cinema.ui.main.member.MemberContract;
-import com.myp.cinema.ui.main.member.MemberPresenter;
 import com.myp.cinema.ui.moviesmessage.MoviesMessageActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.StringUtils;
@@ -83,12 +75,13 @@ public class movieFragment extends MVPBaseFragment<movieContract.View, moviePres
                 }
                 helper.setText(R.id.movies_type, item.getMovieType());
                 helper.setText(R.id.movies_message, item.getSummary());
-                if ("0.0".equals(item.getPoint())) {
-                    helper.getView(R.id.movies_num).setVisibility(View.GONE);
-                } else {
-                    helper.setText(R.id.movies_num, item.getPoint() + "分");
-                    helper.getView(R.id.movies_num).setVisibility(View.VISIBLE);
-                }
+                helper.getView(R.id.movies_num).setVisibility(View.GONE);
+//                if ("0.0".equals(item.getPoint())) {
+//                    helper.getView(R.id.movies_num).setVisibility(View.GONE);
+//                } else {
+//                    helper.setText(R.id.movies_num, item.getPoint() + "分");
+//                    helper.getView(R.id.movies_num).setVisibility(View.VISIBLE);
+//                }
                 if (!StringUtils.isEmpty(item.getPicture())) {
                     helper.setImageUrl(R.id.movie_img, item.getPicture());
                 } else {

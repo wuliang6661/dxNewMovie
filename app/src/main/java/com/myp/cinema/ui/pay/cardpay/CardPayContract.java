@@ -1,7 +1,6 @@
 package com.myp.cinema.ui.pay.cardpay;
 
 import com.myp.cinema.entity.CardBO;
-import com.myp.cinema.entity.OrderBO;
 import com.myp.cinema.entity.PayCardBO;
 import com.myp.cinema.entity.ResuBo;
 import com.myp.cinema.mvp.BasePresenter;

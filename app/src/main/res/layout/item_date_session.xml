@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="@dimen/margin_top"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center">
+
+
+        <View
+            android:id="@+id/selectView"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="@drawable/session_date_bg"
+            android:layout_marginTop="13dp"/>
 
         <TextView
             android:id="@+id/date_text"
-            android:layout_width="90dp"
-            android:layout_height="27dp"
-            android:background="@drawable/session_text_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="05.03 今天"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text12" />
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:textColor="#161616"
+            android:textSize="15sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

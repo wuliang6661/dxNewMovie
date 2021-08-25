@@ -1,11 +1,7 @@
 package com.myp.cinema.ui.feedbacklist;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.FeedBackListBO;
-import com.myp.cinema.entity.LunBoBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
 import java.util.List;

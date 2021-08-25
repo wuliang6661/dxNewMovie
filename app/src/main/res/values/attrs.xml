@@ -13,6 +13,9 @@
         <attr name="seat_sold" format="reference" />
         <attr name="seat_available" format="reference" />
         <attr name="overview_checked" format="color" />
+        <attr name="seat_not_available" format="reference" />
+        <attr name="left_seat_not_available" format="reference" />
+        <attr name="right_seat_not_available" format="reference" />
         <attr name="overview_sold" format="color" />
         <attr name="txt_color" format="color" />
         <attr name="seat_friends" format="color" />

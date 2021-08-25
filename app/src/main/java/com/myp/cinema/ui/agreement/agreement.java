@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 
 import com.myp.cinema.R;
 import com.myp.cinema.base.BaseWebActivity;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import butterknife.Bind;
 

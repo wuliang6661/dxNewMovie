@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import com.myp.cinema.config.LocalConfiguration;
 import com.myp.cinema.entity.WXPayBO;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;

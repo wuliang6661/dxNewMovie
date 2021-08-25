@@ -24,6 +24,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="购票支付成功"

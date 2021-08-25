@@ -9,11 +9,60 @@
     <com.donkingliang.banner.CustomBanner
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="155dp"
         app:indicatorInterval="5dp"
         app:indicatorSelectRes="@drawable/landian"
         app:indicatorStyle="ORDINARY"
         app:indicatorUnSelectRes="@drawable/baidian" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/dxCoinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/store_bg"
+            android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="27dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的德信币"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                android:id="@+id/myCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="16sp"
+                android:textColor="#EA5B43"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/exchangeRecord"
+            android:text="兑换记录"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="21dp"
+            android:layout_marginTop="15dp"
+            android:drawableEnd="@mipmap/store_right_icon"
+            android:drawablePadding="6dp"/>
+    </RelativeLayout>
+
+
     <com.myp.cinema.util.MyListView
         android:id="@+id/ads_list"
         android:layout_width="match_parent"

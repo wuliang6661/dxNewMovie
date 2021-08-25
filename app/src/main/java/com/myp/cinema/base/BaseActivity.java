@@ -1,12 +1,15 @@
 package com.myp.cinema.base;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +27,9 @@ import com.myp.cinema.ui.userlogin.LoginActivity;
 import com.myp.cinema.util.AppManager;
 import com.myp.cinema.util.LogUtils;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.zh.swipebacklib.SwipeBackActivityHelper;
+import com.zh.swipebacklib.SwipeBackLayout;
+import com.zh.swipebacklib.tools.Util;
 
 import butterknife.ButterKnife;
 
@@ -37,6 +43,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
 
     private SVProgressHUD svProgressHUD;
+    private Activity mActivity;
+    private SwipeBackActivityHelper mHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,10 +52,60 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayout());
         ImmersionBar.with(this).init();   //解决虚拟按键与状态栏沉浸冲突
+        setStatusBarColor(1);
         ButterKnife.bind(this);
         LogUtils.init(this);
         svProgressHUD = new SVProgressHUD(this);
         AppManager.getAppManager().addActivity(this);
+        mActivity = this;
+        Log.e("zh","onCreate mActivity ========" + mActivity.getClass().getSimpleName());
+        mHelper = new SwipeBackActivityHelper(this);
+        //是否支持缩放动画
+        mHelper.onActivityCreate(isSupportFinishAnim());
+        //是否支持滑动返回
+//        setSwipeBackEnable(isSupportSwipeBack());
+        setSwipeBackEnable(false);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.e("zh","onPostCreate  mActivity ========" + mActivity.getClass().getSimpleName());
+        mHelper.onPostCreate();
+    }
+
+    @Override
+    public void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete();
+        if( getSwipeBackLayout().finishAnim && !getSwipeBackLayout().mIsActivitySwipeing){
+            Util.convertActivityFromTranslucent(mActivity);
+            getSwipeBackLayout().mIsActivityTranslucent = false;
+            Log.e("zh","onEnterAnimationComplete  mActivity ========" + mActivity.getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * 是否支持滑动返回。这里在父类中默认返回 true 来支持滑动返回，如果某个界面不想支持滑动返回则重写该方法返回 false 即可
+     * @return
+     */
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
+
+    public boolean isSupportFinishAnim() {
+        return true;
+    }
+
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mHelper.getSwipeBackLayout();
+    }
+
+    public void setSwipeBackEnable(boolean enable) {
+        getSwipeBackLayout().setEnableGesture(enable);
+    }
+
+    public boolean getSwipeBackEnable() {
+        return getSwipeBackLayout().getSwipeBackEnable();
     }
 
     @Override
@@ -56,6 +114,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ImmersionBar.with(this).destroy();
         ButterKnife.unbind(this);
         AppManager.getAppManager().removeActivity(this);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        mHelper.finish();
     }
 
     /**
@@ -209,5 +273,21 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
 
     protected abstract int getLayout();
+
+
+    /**
+     * 设置状态栏字体颜色
+     * @param i
+     */
+    private void setStatusBarColor(int i){
+        //修改字体颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以后可以对状态栏文字颜色和图标进行修改
+            if (i==1) {//黑色状态栏文字
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }else {//白色状态栏文字
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            }
+        }
+    }
 
 }

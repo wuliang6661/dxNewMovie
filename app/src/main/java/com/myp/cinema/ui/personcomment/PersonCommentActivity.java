@@ -2,13 +2,8 @@ package com.myp.cinema.ui.personcomment;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +19,6 @@ import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.util.TimeUtils;
 import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
-import com.myp.cinema.widget.swiferefresh.SwipeRefreshView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -71,6 +65,7 @@ public class PersonCommentActivity extends MVPBaseActivity<PersonCommentContract
         goBack();
         setTitle("我的影评");
         mPresenter.loadPersonComment(MyApplication.user.getId(),1);
+        showProgress("加载中...");
         setPullRefresher();
         adapter();
 
@@ -140,11 +135,13 @@ public class PersonCommentActivity extends MVPBaseActivity<PersonCommentContract
 
     @Override
     public void onRequestError(String msg) {
+        stopProgress();
         LogUtils.showToast(msg);
     }
 
     @Override
     public void onRequestEnd(){
+        stopProgress();
     }
 
     @Override

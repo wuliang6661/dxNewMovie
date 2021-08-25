@@ -34,7 +34,7 @@
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
                 android:text="第三方登陆"
-                android:textColor="@color/text_style01"
+                android:textColor="#ffffff"
                 android:textSize="13dp" />
 
 
@@ -55,7 +55,7 @@
             android:layout_marginTop="16dp">
 
 
-//weixin,wx,weibo,wb,qq,qq
+            //weixin,wx,weibo,wb,qq,qq
 
             <ImageView
                 android:id="@+id/weibo"
@@ -177,7 +177,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/button_bule"
             android:gravity="center"
-            android:text="登陆"
+            android:text="登录"
             android:textColor="@color/white"
             android:textSize="16dp" />
 
@@ -194,7 +194,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="忘记密码"
-                android:textColor="@color/text_style01"
+                android:textColor="#ffffff"
                 android:textSize="13dp" />
 
 
@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="免费注册"
-                android:textColor="@color/text_style01"
+                android:textColor="#ffffff"
                 android:textSize="13dp" />
 
 

@@ -1,22 +1,13 @@
 package com.myp.cinema.ui.personsetting;
 
-import com.myp.cinema.api.HttpInterface;
 import com.myp.cinema.api.HttpInterfaceIml;
-import com.myp.cinema.entity.BaseResult;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 
 /**

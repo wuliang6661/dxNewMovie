@@ -6,6 +6,7 @@
     android:orientation="vertical">
     <include layout="@layout/header_layout02" />
     <RelativeLayout
+        android:id="@+id/rlCard"
         android:layout_width="match_parent"
         android:layout_height="212dp"
         android:background="@drawable/kapian">

@@ -6,10 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.base.BaseActivity;
+import com.myp.cinema.entity.PicVerificBO;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.RegexUtils;
@@ -35,6 +38,10 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
     Button getVerification;
     @Bind(R.id.register_button)
     Button registerButton;
+    @Bind(R.id.picCode)
+    EditText picCode;//图文验证
+    @Bind(R.id.ivCode)
+    ImageView ivCode;//图文验证
 
     String phone;
     String loadVersition = "";   //获取的正确验证码
@@ -55,6 +62,8 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
 
         registerButton.setOnClickListener(this);
         getVerification.setOnClickListener(this);
+        ivCode.setOnClickListener(this);
+        getPicVersition();
     }
 
     @Override
@@ -68,13 +77,20 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
                 }
                 break;
             case R.id.get_verification:
-                if (RegexUtils.isMobileExact(phone)) {
-                    getVersition();
-                    timer.start();
-                    getVerification.setEnabled(false);
+                if (phone.startsWith("1") && phone.length() == 11) {
+                    if (StringUtils.isEmpty(picCode.getText().toString())){
+                        LogUtils.showToast("图文验证码错误！");
+                    }else {
+                        getVersition();
+                    }
                 } else {
                     LogUtils.showToast("请输入正确的手机号！");
                 }
+                break;
+            case R.id.ivCode:
+                getPicVersition();
+                break;
+            default:
                 break;
         }
     }
@@ -84,7 +100,7 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
      * 获取验证码
      */
     private void getVersition() {
-        HttpInterfaceIml.userVerification(phone, "validate").subscribe(new Subscriber<String>() {
+        HttpInterfaceIml.userVerification(phone, "validate",picCode.getText().toString()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
 
@@ -98,9 +114,37 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onNext(String s) {
                 loadVersition = s;
+                timer.start();
+                getVerification.setEnabled(false);
             }
         });
     }
+
+
+    /**
+     * 获取图文验证码
+     */
+    private void getPicVersition() {
+        HttpInterfaceIml.picVerification().subscribe(new Subscriber<PicVerificBO>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(PicVerificBO s) {
+                if (s != null) {
+                    Glide.with(VerifyActivity.this).load(s.getPath()).into(ivCode);
+                }
+            }
+        });
+    }
+
 
 
     /**
@@ -135,12 +179,8 @@ public class VerifyActivity extends BaseActivity implements View.OnClickListener
      * 验证输入
      */
     private boolean isRegister() {
-        if (!RegexUtils.isMobileExact(phone)) {
-            LogUtils.showToast("请输入正确的手机号！");
-            return false;
-        }
-        if (StringUtils.isEmpty(versition) || !versition.equals(loadVersition)) {
-            LogUtils.showToast("验证码错误！");
+        if (!phone.startsWith("1") || phone.length() != 11) {
+            LogUtils.showToast("请输入正确的手机号码！");
             return false;
         }
         return true;

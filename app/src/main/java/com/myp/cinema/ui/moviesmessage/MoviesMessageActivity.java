@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -38,6 +39,7 @@ import com.myp.cinema.ui.moviessession.SessionActivity;
 import com.myp.cinema.ui.personread.persongrade.PersonGradeActivity;
 import com.myp.cinema.util.ImageUtils;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.ScreenUtils;
 import com.myp.cinema.util.SizeUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.widget.ShareDialog;
@@ -86,6 +88,7 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
     TextView movieAllTime;
     ImageView shouCang;   //收藏
     ImageView shareImg;   //分享
+    View view;
 
     /**
      * 正文部分
@@ -125,6 +128,8 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
         super.onCreate(savedInstanceState);
         loadViewForPullToZoomScrollView(scollview);
         setPullToZoomViewLayoutParams(scollview);
+        setTitle("影片详情");
+        goBack();
         moviesByCidBO = (MoviesByCidBO) getIntent().getExtras().getSerializable("movie");
         submitButton.setOnClickListener(this);
         initView();
@@ -267,6 +272,11 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
             @Override
             public void convert(LGViewHolder holder, DirectorBO o, int position) {
                 ImageView personImg = (ImageView) holder.getView(R.id.person_img);
+                ViewGroup.LayoutParams params = personImg.getLayoutParams();
+                params.width = (int) (ScreenUtils.getScreenWidth() * 0.25);
+                params.height = (int) (ScreenUtils.getScreenWidth() * 0.35);
+                personImg.setLayoutParams(params);
+
                 TextView personName = (TextView) holder.getView(R.id.person_name);
                 TextView personPost = (TextView) holder.getView(R.id.person_post);
                 personName.setText(o.getName());
@@ -285,6 +295,7 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
                 setBigImageShow(photos, "演员剧照", position);
             }
         });
+
         personRecycle.setAdapter(adapter);
     }
 
@@ -313,6 +324,11 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
             @Override
             public void convert(LGViewHolder holder, VideoBO o, int position) {
                 ImageView video_img = (ImageView) holder.getView(R.id.video_img);
+                ViewGroup.LayoutParams params = video_img.getLayoutParams();
+                params.width = (int) (ScreenUtils.getScreenWidth() * 0.5);
+                params.height = (int) (ScreenUtils.getScreenWidth() * 0.28);
+                video_img.setLayoutParams(params);
+
                 if (!StringUtils.isEmpty(o.getPicture())) {
                     Picasso.with(MoviesMessageActivity.this).load(o.getPicture()).into(video_img);
                 } else {
@@ -351,6 +367,14 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
             public void convert(LGViewHolder holder, String o, int position) {
                 holder.getView(R.id.bofang).setVisibility(View.GONE);
                 ImageView video_img = (ImageView) holder.getView(R.id.video_img);
+
+                ViewGroup.LayoutParams params = video_img.getLayoutParams();
+                params.width = (int) (ScreenUtils.getScreenWidth() * 0.5);
+                params.height = (int) (ScreenUtils.getScreenWidth() * 0.28);
+                video_img.setLayoutParams(params);
+
+
+
                 if (StringUtils.isEmpty(o)) {
                     video_img.setImageResource(R.color.act_bg01);
                 } else {
@@ -458,7 +482,7 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
         LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth,
                 (int) (9.0F * (mScreenWidth / 16.0F)));
 //        (int) (9.0F * (mScreenWidth / 15.0F))
-        scrollView.setHeaderViewSize(mScreenWidth, SizeUtils.dp2px(230));
+        scrollView.setHeaderViewSize(mScreenWidth, (int)(mScreenWidth*0.55));
 //        scrollView.setHeaderLayoutParams(localObject);
     }
 
@@ -611,6 +635,11 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
         ratingMessage = (TextView) scollview.getPullRootView().findViewById(R.id.rating_type);
         goBack = (LinearLayout) scollview.getHeaderView().findViewById(R.id.go_back);
         movieImg = (ImageView) scollview.getHeaderView().findViewById(R.id.movie_img);
+        ViewGroup.LayoutParams params = movieImg.getLayoutParams();
+        params.width = (int) (ScreenUtils.getScreenWidth() * 0.3);
+        params.height = (int) (ScreenUtils.getScreenWidth() * 0.42);
+        movieImg.setLayoutParams(params);
+
         movieName = (TextView) scollview.getHeaderView().findViewById(R.id.movies_name);
         movieMessage = (TextView) scollview.getHeaderView().findViewById(R.id.movie_message);
         movieType = (ImageView) scollview.getHeaderView().findViewById(R.id.movie_type);
@@ -619,7 +648,18 @@ public class MoviesMessageActivity extends MVPBaseActivity<MoviesMessageContract
         movieAllTime = (TextView) scollview.getHeaderView().findViewById(R.id.movie_all_time);
         shouCang = (ImageView) scollview.getHeaderView().findViewById(R.id.shoucang);
         shareImg = (ImageView) scollview.getHeaderView().findViewById(R.id.fenxiang_img);
+        view = scollview.getHeaderView().findViewById(R.id.view);
+
+        ViewGroup.LayoutParams params1 = view.getLayoutParams();
+        params.height = (int) (ScreenUtils.getScreenWidth() * 0.07);
+        view.setLayoutParams(params1);
+
         movieBg = (ImageView) scollview.getZoomView().findViewById(R.id.imageView);
+
+        ViewGroup.LayoutParams layoutParams = movieBg.getLayoutParams();
+        params.height = (int) (ScreenUtils.getScreenWidth() * 0.6);
+        movieBg.setLayoutParams(layoutParams);
+
         unfold.setOnClickListener(this);
         goBack.setOnClickListener(this);
         shouCang.setOnClickListener(this);

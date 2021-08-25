@@ -81,6 +81,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         webSetting.setDatabasePath(this.getDir("databases", 0).getPath());
         webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
                 .getPath());
+        webSetting.setAllowUniversalAccessFromFileURLs(true);
         CookieSyncManager.createInstance(this);
         CookieSyncManager.getInstance().sync();
     }

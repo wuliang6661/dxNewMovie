@@ -1,6 +1,6 @@
 package com.myp.cinema.ui.personorder;
 
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
 
@@ -13,11 +13,11 @@ import java.util.List;
 public class completedContract {
     interface View extends BaseRequestView {
 
-        void getOrderList(List<OrderBO> orderList, int page);
+        void getOrderList(List<LockSeatsBO> orderList);
     }
 
     interface Presenter extends BasePresenter<completedContract.View> {
 
-        void loadOrderList( int page );
+        void loadOrderList(String orderType,String payStatus,int orderPage,String orderSize);
     }
 }

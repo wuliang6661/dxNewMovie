@@ -6,7 +6,7 @@
 
     <dimen name="text_big">15dp</dimen>
     <dimen name="text_center">12dp</dimen>
-    <dimen name="text_small">11dp</dimen>
+    <dimen name="text_small">11sp</dimen>
 
     <dimen name="text_header">18dp</dimen>
 

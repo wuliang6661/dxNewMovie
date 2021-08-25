@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/kapian"
+    android:id="@+id/rlCard">
+
+    <TextView
+        android:id="@+id/card_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="20dp"
+        android:text="NO.00600033568"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/text_big" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@id/card_num"
+        android:layout_below="@id/card_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="余额 :"
+            android:textColor="#d9b658" />
+
+        <TextView
+            android:id="@+id/cardPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="186"
+            android:textSize="20sp"
+            android:textColor="#d9b658" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 元"
+            android:textColor="#d9b658" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/gotoPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:layout_below="@id/linear_layout"
+        android:layout_marginTop="65dp"
+        android:text="去充值 >"
+        android:textColor="#d9b658"
+        android:textSize="13sp" />
+
+</RelativeLayout>

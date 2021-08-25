@@ -1,7 +1,5 @@
 package com.myp.cinema.ui.somepeople;
 
-import android.content.Context;
-
 import com.myp.cinema.mvp.BasePresenterImpl;
 
 /**

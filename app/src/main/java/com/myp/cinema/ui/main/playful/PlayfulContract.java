@@ -1,13 +1,9 @@
 package com.myp.cinema.ui.main.playful;
 
-import android.content.Context;
-
 import com.myp.cinema.entity.LunBoBO;
-import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.entity.ShopBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
 
 import java.util.List;
 

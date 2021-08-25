@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,8 +31,8 @@ public class AddCardActiivty extends BaseActivity implements View.OnClickListene
     EditText cardNumEdit;
     @Bind(R.id.password_edit)
     EditText passwordEdit;
-    @Bind(R.id.submit_button)
-    TextView submitButton;
+    @Bind(R.id.submitBtn)
+    Button submitBtn;
 
 
     String cardNum;
@@ -49,7 +50,7 @@ public class AddCardActiivty extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         goBack();
         setTitle("绑定会员卡");
-        submitButton.setOnClickListener(this);
+        submitBtn.setOnClickListener(this);
 
     }
     @Override
@@ -57,8 +58,9 @@ public class AddCardActiivty extends BaseActivity implements View.OnClickListene
         cardNum = cardNumEdit.getText().toString().trim();
         pwd = passwordEdit.getText().toString().trim();
         switch (v.getId()) {
-            case R.id.submit_button:
+            case R.id.submitBtn:
                 if (isCardNum()) {
+                    submitBtn.setEnabled(false);
                     bingCard();
                 }
                 break;
@@ -104,10 +106,12 @@ public class AddCardActiivty extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.showToast(e.getMessage());
+                        submitBtn.setEnabled(true);
                     }
 
                     @Override
                     public void onNext(CardBO s) {
+                        submitBtn.setEnabled(true);
                         LogUtils.showToast("绑定成功!");
                         Intent intent = new Intent();
                         setResult(1, intent);

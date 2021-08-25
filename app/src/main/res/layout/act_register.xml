@@ -42,6 +42,51 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/edit_register_bg"
+        android:gravity="center_vertical">
+
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginLeft="@dimen/margin_top"
+            android:layout_marginRight="@dimen/margin_top"
+            android:background="@drawable/yanzheng"
+            android:layout_centerVertical="true"/>
+
+
+        <EditText
+            android:id="@+id/picCode"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:layout_marginRight="@dimen/margin_top"
+            android:layout_toEndOf="@id/iv"
+            android:background="@color/white"
+            android:hint="请输入图文验证"
+            android:maxLength="4"
+            android:phoneNumber="true"
+            android:textColor="@color/text_big"
+            android:textColorHint="@color/text_style01"
+            android:textSize="@dimen/text_big" />
+
+        <ImageView
+            android:id="@+id/ivCode"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"/>
+
+    </RelativeLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -148,6 +193,39 @@
             android:layout_height="19dp"
             android:layout_marginLeft="@dimen/margin_top"
             android:layout_marginRight="@dimen/margin_top"
+            android:background="@drawable/mima" />
+
+
+        <EditText
+            android:id="@+id/passwordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:layout_marginRight="@dimen/margin_top"
+            android:background="@color/white"
+            android:hint="请再次输入密码"
+            android:maxLength="20"
+            android:password="true"
+            android:textColor="@color/text_big"
+            android:textColorHint="@color/text_style01"
+            android:textSize="@dimen/text_big" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:background="@drawable/edit_register_bg"
+        android:gravity="center_vertical">
+
+
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginLeft="@dimen/margin_top"
+            android:layout_marginRight="@dimen/margin_top"
             android:background="@drawable/xingbie" />
 
 
@@ -213,7 +291,8 @@
         android:layout_marginRight="22dp"
         android:layout_marginTop="45dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
 
         <CheckBox

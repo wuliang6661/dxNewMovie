@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.entity.OrderNumBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.ui.pay.PayActivity;
@@ -58,7 +58,7 @@ public class NotPayMessageActivity extends MVPBaseActivity<NotPayMessageContract
     @Bind(R.id.order_cancle)
     Button orderCancle;
 
-    OrderBO orderBO;
+    LockSeatsBO orderBO;
 
     @Override
     protected int getLayout() {
@@ -71,7 +71,7 @@ public class NotPayMessageActivity extends MVPBaseActivity<NotPayMessageContract
         goBack();
         setTitle("待支付详情");
 
-        orderBO = (OrderBO) getIntent().getExtras().getSerializable("order");
+        orderBO = (LockSeatsBO) getIntent().getExtras().getSerializable("order");
         invition();
         goPay.setOnClickListener(this);
         orderCancle.setOnClickListener(this);
@@ -85,10 +85,10 @@ public class NotPayMessageActivity extends MVPBaseActivity<NotPayMessageContract
         moviesType.setText(orderBO.getDxMovie().getMovieDimensional() + orderBO.getDxMovie().getMovieLanguage());
         moviesAddress.setText(orderBO.getCinemaName() + " " + orderBO.getHallName());
         moviesTime.setText(orderBO.getPlayName().substring(0, orderBO.getPlayName().length() - 3));
-        moviesNum.setText(orderBO.getTicketNum());
+        moviesNum.setText(String.valueOf(orderBO.getTicketNum()));
         phoneNum.setText(orderBO.getOrderPhone());
         orderNum.setText("订单号：" + orderBO.getOrderNum());
-        orderPrice.setText("总价：¥" + orderBO.getTicketOriginPrice());
+        orderPrice.setText("总价：¥" + orderBO.getPayPrice());
         moviesSeat.setText(CimemaUtils.getSeats(orderBO.getSeats()));
         if (StringUtils.isEmpty(orderBO.getDxMovie().getPicture())) {
             moviesImg.setImageResource(R.color.act_bg01);
@@ -102,7 +102,8 @@ public class NotPayMessageActivity extends MVPBaseActivity<NotPayMessageContract
         switch (v.getId()) {
             case R.id.go_pay:
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("order", orderBO);
+                bundle.putInt("confrim",1);
+                bundle.putSerializable("lockSeatsBO", orderBO);
                 gotoActivity(PayActivity.class, bundle, false);
                 break;
             case R.id.order_cancle:

@@ -1,8 +1,6 @@
 package com.myp.cinema.ui.main;
 
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.CinemaBo;
 import com.myp.cinema.mvp.BasePresenterImpl;

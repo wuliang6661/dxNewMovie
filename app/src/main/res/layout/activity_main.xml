@@ -22,32 +22,32 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:xyzIcon="@drawable/kanpian"
-            app:xyzIconHeight="26dp"
-            app:xyzIconWidth="26dp"
-            app:xyzSelectIcon="@drawable/kanpianxz"
+            app:xyzIcon="@mipmap/newmovie_no"
+            app:xyzIconHeight="25dp"
+            app:xyzIconWidth="25dp"
+            app:xyzSelectIcon="@mipmap/newmovie_yes"
             app:xyzSelectState="true"
-            app:xyzTitle="看片"
+            app:xyzTitle="购票"
             app:xyzTitleColor="@color/text_style01"
-            app:xyzTitleSelectColor="#74c4e3"
+            app:xyzTitleSelectColor="#EA5B43"
             app:xyzTitleSize="@dimen/text10"
             app:xyzTitleTop="5dp" />
-
         <com.xyz.tabitem.BottmTabItem
-            android:id="@+id/haowan"
+            android:id="@+id/product"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:xyzIcon="@drawable/youxi"
-            app:xyzIconHeight="26dp"
-            app:xyzIconWidth="26dp"
-            app:xyzSelectIcon="@drawable/youxixz"
+            app:xyzIcon="@mipmap/newproduct_no"
+            app:xyzIconHeight="25dp"
+            app:xyzIconWidth="25dp"
+            app:xyzSelectIcon="@mipmap/newproduct_yes"
             app:xyzSelectState="false"
-            app:xyzTitle="互动"
+            app:xyzTitle="卖品"
             app:xyzTitleColor="@color/text_style01"
-            app:xyzTitleSelectColor="#74c4e3"
+            app:xyzTitleSelectColor="#EA5B43"
             app:xyzTitleSize="@dimen/text10"
             app:xyzTitleTop="5dp" />
+
 
         <com.xyz.tabitem.BottmTabItem
             android:id="@+id/haoxiaoxi"
@@ -63,22 +63,39 @@
             app:xyzTitleColor="@color/text_style01"
             app:xyzTitleSelectColor="#74c4e3"
             app:xyzTitleSize="@dimen/text10"
-            app:xyzTitleTop="5dp" />
+            app:xyzTitleTop="5dp"
+            android:visibility="gone"/>
 
+        <com.xyz.tabitem.BottmTabItem
+            android:id="@+id/haowan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:xyzIcon="@mipmap/newstore_no"
+            app:xyzIconHeight="25dp"
+            app:xyzIconWidth="25dp"
+            app:xyzSelectIcon="@mipmap/newstore_yes"
+            app:xyzSelectState="false"
+            app:xyzTitle="商城"
+            app:xyzTitleColor="@color/text_style01"
+            app:xyzTitleSelectColor="#EA5B43"
+            app:xyzTitleSize="@dimen/text10"
+            app:xyzTitleTop="5dp"
+            android:visibility="gone"/>
 
         <com.xyz.tabitem.BottmTabItem
             android:id="@+id/huiyuan"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:xyzIcon="@drawable/wo"
-            app:xyzIconHeight="26dp"
-            app:xyzIconWidth="26dp"
-            app:xyzSelectIcon="@drawable/woxz"
+            app:xyzIcon="@mipmap/newmine_no"
+            app:xyzIconHeight="25dp"
+            app:xyzIconWidth="25dp"
+            app:xyzSelectIcon="@mipmap/newmine_yes"
             app:xyzSelectState="false"
-            app:xyzTitle="我"
+            app:xyzTitle="会员"
             app:xyzTitleColor="@color/text_style01"
-            app:xyzTitleSelectColor="#74c4e3"
+            app:xyzTitleSelectColor="#EA5B43"
             app:xyzTitleSize="@dimen/text10"
             app:xyzTitleTop="5dp" />
 

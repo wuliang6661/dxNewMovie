@@ -12,8 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
-import com.myp.cinema.base.MyApplication;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
 import com.myp.cinema.ui.personorder.notpaymessage.NotPayMessageActivity;
 import com.myp.cinema.util.CimemaUtils;
@@ -47,8 +46,8 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
     @Bind(R.id.text_layout)
     TextView textlayout;
 
-    CommonAdapter<OrderBO> adapter;
-    private List<OrderBO> data= new ArrayList<>();
+    CommonAdapter<LockSeatsBO> adapter;
+    private List<LockSeatsBO> data= new ArrayList<>();
     private int page = 1;
 
     @Nullable
@@ -61,24 +60,24 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.loadOrderList( 1);
+        mPresenter.loadOrderList( "0","0",page,"10");
         list.setOnItemClickListener(this);
         setPullRefresher();
         adapter();
     }
     private void adapter() {
-        adapter = new CommonAdapter<OrderBO>(getActivity(), R.layout.item_order, data) {
+        adapter = new CommonAdapter<LockSeatsBO>(getActivity(), R.layout.item_order, data) {
             @Override
-            protected void convert(ViewHolder helper, OrderBO item, int position) {
+            protected void convert(ViewHolder helper, LockSeatsBO item, int position) {
                 helper.setText(R.id.movies_name, item.getDxMovie().getMovieName());
                 helper.setText(R.id.movies_type, item.getDxMovie().getMovieDimensional() +
                         item.getDxMovie().getMovieLanguage());
                 helper.setText(R.id.movies_address, item.getCinemaName() + " " + item.getHallName());
                 helper.setText(R.id.movies_seat, CimemaUtils.getSeats(item.getSeats()));
                 helper.setText(R.id.movies_time, item.getPlayName().substring(0, item.getPlayName().length() - 3));
-                helper.setText(R.id.movies_num, item.getTicketNum());
-                if ("0".equals(item.getPayStatus())) {  //未完成的票价
-                    helper.setText(R.id.order_price, "总价：¥" + item.getTicketOriginPrice());
+                helper.setText(R.id.movies_num, String.valueOf(item.getTicketNum()));
+                if (0 == item.getPayStatus()) {  //未完成的票价
+                    helper.setText(R.id.order_price, "总价：¥" + item.getPayPrice());
                 }
                 if (StringUtils.isEmpty(item.getDxMovie().getPicture())) {
                     helper.setImageResource(R.id.movies_img, R.color.act_bg01);
@@ -93,8 +92,8 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPresenter.loadOrderList( 1);
                 page=1;
+                mPresenter.loadOrderList( "0","0",page,"10");
                 smartRefreshLayout.finishRefresh(1000);
                 refreshlayout.finishRefresh(2000);
             }
@@ -103,7 +102,7 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-                mPresenter.loadOrderList( page);
+                mPresenter.loadOrderList( "0","0",page,"10");
                 smartRefreshLayout.finishLoadmore(1000);
                 refreshlayout.finishLoadmore(2000);
             }
@@ -125,7 +124,7 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
-            mPresenter.loadOrderList( 1);
+            mPresenter.loadOrderList( "0","0",page,"10");
         }
     }
     @Override
@@ -144,8 +143,8 @@ public class hangintheair  extends MVPBaseFragment<hangintheairContract.View, ha
     }
 
     @Override
-    public void getOrderList(List<OrderBO> orderList, int pages) {
-        if(pages==1){
+    public void getOrderList(List<LockSeatsBO> orderList) {
+        if(page==1){
             if(orderList.size()==0){
                 smartRefreshLayout.setVisibility(View.GONE);
                 nonelayout.setVisibility(View.VISIBLE);

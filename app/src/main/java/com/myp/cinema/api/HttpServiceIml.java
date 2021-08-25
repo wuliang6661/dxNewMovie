@@ -1,7 +1,5 @@
 package com.myp.cinema.api;
 
-import android.util.Log;
-
 import com.myp.cinema.entity.aCinemaSeatTableBO;
 import com.myp.cinema.util.MD5;
 import com.myp.cinema.util.rx.RxResultHelper;

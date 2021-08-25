@@ -12,7 +12,6 @@ import android.widget.ListView;
 import com.myp.cinema.R;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.HotWireBO;
-import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
 import com.myp.cinema.ui.WebViewActivity;
 import com.myp.cinema.util.LogUtils;

@@ -9,11 +9,12 @@
 
     <include layout="@layout/header_layout02" />
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <TextView
             android:background="#ffffff"
-            android:text="充值明细"
+            android:text="最新记录"
             android:gravity="center"
             android:id="@+id/movie"
             android:layout_weight="1"
@@ -21,7 +22,7 @@
             android:layout_height="match_parent" />
         <TextView
             android:background="#ffffff"
-            android:text="消费明细"
+            android:text="历史记录"
             android:gravity="center"
             android:id="@+id/article"
             android:layout_weight="1"

@@ -3,7 +3,6 @@ package com.myp.cinema.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;

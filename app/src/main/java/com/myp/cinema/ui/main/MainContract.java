@@ -1,7 +1,6 @@
 package com.myp.cinema.ui.main;
 
 import com.myp.cinema.entity.CinemaBo;
-import com.myp.cinema.entity.aCinemaIdBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
 

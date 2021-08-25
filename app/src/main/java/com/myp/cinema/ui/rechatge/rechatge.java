@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
 import rx.Subscriber;
 
 /**
@@ -48,7 +50,6 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
 
     private RecyclerView recyclerView;
     private DemoAdapter adapter;
-    private TextView te;
     private String countid;
     private String chongzhijine = "mr";
     private ImageView weixinxuanze;
@@ -63,10 +64,16 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
     private double xx;
     private String xxx;
     private String cardPrice;
-    private TextView yuetext;
-    private TextView textyuedu;
     private String cinemaId;
+    private Button submitBtn;
+    private TextView yuetext;
 
+    @Bind(R.id.card_num)
+    TextView card_num;
+    @Bind(R.id.txtPayActivity)
+    TextView txtPayActivity;//充值活动
+    @Bind(R.id.rlCard)
+    RelativeLayout rlCard;
 
     @Override
     protected int getLayout() {
@@ -84,19 +91,28 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
         if (intent != null) {
             cardNum = intent.getStringExtra("cardcode");
             cardPrice = intent.getStringExtra("cardPrice");
-
-        }
-        recyclerView = (RecyclerView) findViewById(R.id.recylerview);
-        te = (TextView) findViewById(R.id.te);
-        textyuedu = (TextView) findViewById(R.id.textyuedu);
-        textyuedu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(rechatge.this, agreement.class));
+            if (intent.getStringExtra("cardType").equals("至尊卡")){
+                rlCard.setBackground(getResources().getDrawable(R.drawable.kapian_perfect));
+            }else if (intent.getStringExtra("cardType").equals("战疫卡")){
+                rlCard.setBackground(getResources().getDrawable(R.drawable.war_card));
+            }else if (intent.getStringExtra("cardType").equals("集团99看过瘾")){
+                rlCard.setBackground(getResources().getDrawable(R.drawable.jiu_card));
+            }else {
+                rlCard.setBackground(getResources().getDrawable(R.drawable.kapian));
             }
-        });
+        }
+        card_num.setText(String.format("No.%s",cardNum));
+        recyclerView = (RecyclerView) findViewById(R.id.recylerview);
+        submitBtn = findViewById(R.id.submitBtn);
+//        textyuedu = (TextView) findViewById(R.id.textyuedu);
+//        textyuedu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(rechatge.this, agreement.class));
+//            }
+//        });
         yuetext = (TextView) findViewById(R.id.yuetext);
-        yuetext.setText("余额：" + cardPrice + "元");
+        yuetext.setText(cardPrice);
         weixinxuanze = (ImageView) findViewById(R.id.weixinxuanze);
         zhifubaoxuanze = (ImageView) findViewById(R.id.zhifubaoxuanze);
         xuanzeweixin = (RelativeLayout) findViewById(R.id.xuanzeweixin);
@@ -163,7 +179,7 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
     public void getRechat(List<RechatBo> rechats) {
         ArrayList<ItemModel> list = new ArrayList<>();
         for (int i = 0; i < rechats.size(); i++) {
-            String count = rechats.get(i).getRechargeMoney();
+            String count = rechats.get(i).getRealPrice();
             xx = Math.floor(Float.parseFloat(count));
             xxx = xx + "";
             if (xxx.indexOf(".") > 0) {
@@ -171,9 +187,9 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
                 xxx = xxx.replaceAll("[.]$", "");//如最后一位是.则去掉
             }
             countid = rechats.get(i).getId();
-            list.add(new ItemModel(ItemModel.TWO, xxx, countid, true));
+            list.add(new ItemModel(ItemModel.TWO, xxx, countid, true,rechats.get(i).getDescription()));
         }
-        list.add(new ItemModel(ItemModel.THREE, null, "", false));
+        list.add(new ItemModel(ItemModel.THREE, null, "", false,""));
         recyclerView.setAdapter(adapter = new DemoAdapter());
         adapter.replaceAll(list, this);
     }
@@ -183,6 +199,13 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
         if (model.type == 1002) {
             chongzhijine = String.valueOf(model.dataa);
             guding = true;
+            if (model.activity != null){
+                txtPayActivity.setVisibility(View.VISIBLE);
+                txtPayActivity.setText(String.format("已选择充值%s,%s",model.data,model.activity));
+            }else {
+                txtPayActivity.setVisibility(View.VISIBLE);
+                txtPayActivity.setText(String.format("已选择充值%s",model.data));
+            }
         } else {
             chongzhijine = model.data.toString();
             guding = false;
@@ -190,7 +213,7 @@ public class rechatge extends MVPBaseActivity<rechatgeContract.View,
     }
 
     private void linsener() {
-        te.setOnClickListener(new View.OnClickListener() {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (chongzhijine.equals("mr")) {

@@ -8,7 +8,6 @@ package com.myp.cinema.ui.phonecode2two;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,14 +15,13 @@ import android.widget.EditText;
 import com.myp.cinema.R;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.config.ConditionEnum;
-import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.ui.main.MainActivity;
-import com.myp.cinema.ui.phonecode.phonecode2;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.MD5;
 import com.myp.cinema.util.StringUtils;
+import com.myp.cinema.util.ToastUtils;
 
 import butterknife.Bind;
 
@@ -105,7 +103,11 @@ public class phonecode2two extends MVPBaseActivity<phonecode2twoContract.View,
                     if(genders.equals("f")){
                         gender="2";
                     }
-                    mPresenter.thirdregist(mobile,MD5.strToMd5Low32(password),header,nickname,gender,wxUserId,wbUserId,qqUserId);
+                    if (MyApplication.cinemaBo != null) {
+                        mPresenter.thirdregist(MyApplication.cinemaBo.getCinemaId(), mobile, MD5.strToMd5Low32(password), header, nickname, gender, wxUserId, wbUserId, qqUserId);
+                    }else {
+                        ToastUtils.showShortToast("请先选择影院");
+                    }
                 }
                 break;
         }
@@ -147,6 +149,9 @@ public class phonecode2two extends MVPBaseActivity<phonecode2twoContract.View,
             MyApplication.user = thirdregistBo.getData();
             MyApplication.spUtils.put("uuid", thirdregistBo.getData().getUuid());
             MyApplication.isLogin = ConditionEnum.LOGIN;
+            if (thirdregistBo.getData().getAlertPhoto() != null) {
+                MyApplication.alertPhoto = thirdregistBo.getData().getAlertPhoto();
+            }
             startActivity(twoback);
             finish();
         }else {

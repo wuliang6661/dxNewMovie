@@ -1,7 +1,5 @@
 package com.myp.cinema.ui.personread.moviesshare;
 
-import android.content.Context;
-
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseView;
 

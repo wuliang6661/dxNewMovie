@@ -65,7 +65,8 @@
                     android:text="7.5"
                     android:textColor="#eb5e3a"
                     android:textSize="@dimen/text15"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>

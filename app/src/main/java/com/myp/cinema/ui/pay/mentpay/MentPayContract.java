@@ -6,6 +6,12 @@ import com.myp.cinema.entity.WXPayBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
@@ -28,7 +34,7 @@ public class MentPayContract {
         /**
          * 获取会员卡返回
          */
-        void getcardPay(ResuBo resuBo);
+        void getcardPay(ResponseBody resuBo) throws JSONException, IOException;
     }
 
     interface Presenter extends BasePresenter<View> {

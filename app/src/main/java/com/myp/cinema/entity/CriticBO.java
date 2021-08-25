@@ -1,7 +1,6 @@
 package com.myp.cinema.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2018/2/27.

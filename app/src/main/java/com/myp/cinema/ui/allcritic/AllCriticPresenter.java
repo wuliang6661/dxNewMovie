@@ -1,7 +1,5 @@
 package com.myp.cinema.ui.allcritic;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.CriticBO;
 import com.myp.cinema.mvp.BasePresenterImpl;

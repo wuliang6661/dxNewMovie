@@ -2,7 +2,6 @@ package com.myp.cinema.util;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by wuliang on 2017/3/27.

@@ -1,6 +1,5 @@
 package com.myp.cinema.ui.personorder;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,9 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
-import com.myp.cinema.ui.personorder.notpaymessage.NotPayMessageActivity;
 import com.myp.cinema.ui.personorder.ordermessage.OrderMessageActivity;
 import com.myp.cinema.util.CimemaUtils;
 import com.myp.cinema.util.LogUtils;
@@ -46,8 +44,8 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
     SmartRefreshLayout smartRefreshLayout;
     @Bind(R.id.none_layout)
     LinearLayout nonelayout;
-    CommonAdapter<OrderBO> adapter;
-    private List<OrderBO> data= new ArrayList<>();
+    CommonAdapter<LockSeatsBO> adapter;
+    private List<LockSeatsBO> data= new ArrayList<>();
     private int page = 1;
 
     @Nullable
@@ -60,25 +58,25 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.loadOrderList( 1);
+        mPresenter.loadOrderList( "0","1",page,"10");
         list.setOnItemClickListener(this);
         setPullRefresher();
         adapter();
     }
     private void adapter() {
-        adapter = new CommonAdapter<OrderBO>(getActivity(), R.layout.item_order, data) {
+        adapter = new CommonAdapter<LockSeatsBO>(getActivity(), R.layout.item_order, data) {
             @Override
-            protected void convert(ViewHolder helper, OrderBO item, int position) {
+            protected void convert(ViewHolder helper, LockSeatsBO item, int position) {
                 helper.setText(R.id.movies_name, item.getDxMovie().getMovieName());
                 helper.setText(R.id.movies_type, item.getDxMovie().getMovieDimensional() +
                         item.getDxMovie().getMovieLanguage());
                 helper.setText(R.id.movies_address, item.getCinemaName() + " " + item.getHallName());
                 helper.setText(R.id.movies_seat, CimemaUtils.getSeats(item.getSeats()));
                 helper.setText(R.id.movies_time, item.getPlayName().substring(0, item.getPlayName().length() - 3));
-                helper.setText(R.id.movies_num, item.getTicketNum());
-                if ("3".equals(item.getPayStatus())||"1".equals(item.getPayStatus())) {   //已完成的票价
-                    helper.setText(R.id.order_price, "总价：¥" + item.getTicketRealPrice());
-                    if(item.getRefundStatus().equals("1")){
+                helper.setText(R.id.movies_num, String.valueOf(item.getTicketNum()));
+                if (3 == item.getPayStatus() || 1 == item.getPayStatus()) {   //已完成的票价
+                    helper.setText(R.id.order_price, "总价：¥" + item.getPayPrice());
+                    if(item.getRefundStatus() == 1){
                         helper.setVisible(R.id.biaoshi, true);
                     }else {
 
@@ -98,8 +96,8 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPresenter.loadOrderList( 1);
                 page=1;
+                mPresenter.loadOrderList( "0","1",page,"10");
                 smartRefreshLayout.finishRefresh(1000);
                 refreshlayout.finishRefresh(2000);
             }
@@ -108,7 +106,7 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-                mPresenter.loadOrderList( page);
+                mPresenter.loadOrderList( "0","1",page,"10");
                 smartRefreshLayout.finishLoadmore(1000);
                 refreshlayout.finishLoadmore(2000);
             }
@@ -119,10 +117,9 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("order", data.get(position));
-        bundle.putString("refundStatus", data.get(position).getRefundStatus());
-        bundle.putString("cinemaId", data.get(position).getCinemaId());
-        bundle.putString("id", data.get(position).getId());
+        bundle.putString("orderNum", data.get(position).getOrderNum());
+        bundle.putString("id",String.valueOf(data.get(position).getId()));
+        bundle.putString("cinemaId",data.get(position).getCinemaId());
         gotoActivity(OrderMessageActivity.class, bundle, false);
 
     }
@@ -138,8 +135,8 @@ public class completed extends MVPBaseFragment<completedContract.View, completed
     }
 
     @Override
-    public void getOrderList(List<OrderBO> orderList, int pages) {
-        if(pages==1){
+    public void getOrderList(List<LockSeatsBO> orderList) {
+        if(page==1){
             if(orderList.size()==0){
                 smartRefreshLayout.setVisibility(View.GONE);
                 nonelayout.setVisibility(View.VISIBLE);

@@ -1,14 +1,9 @@
 package com.myp.cinema.ui.moviessession;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
-import com.myp.cinema.api.HttpServiceIml;
 import com.myp.cinema.entity.FavourBO;
-import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.entity.OrderNumBO;
 import com.myp.cinema.entity.SessionBO;
-import com.myp.cinema.entity.aCinemaPlaysBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
 import java.util.List;

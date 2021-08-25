@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
+import com.myp.cinema.jpush.MessageEvent;
+import com.myp.cinema.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -88,6 +90,10 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.BaseViewHolder
             tv = (TextView) view.findViewById(R.id.tv);
             texta = (TextView) view.findViewById(R.id.text);
             re = (RelativeLayout) view.findViewById(R.id.re);
+            ViewGroup.LayoutParams params = re.getLayoutParams();
+            params.width = (int) (ScreenUtils.getScreenWidth() * 0.27);
+            params.height = (int) (ScreenUtils.getScreenWidth() * 0.13);
+            re.setLayoutParams(params);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,7 +101,7 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.BaseViewHolder
                     notyfy = 0;
                     int position = getAdapterPosition();
                     ItemModel model1 = dataList.get(position);
-                    ItemModel model = new ItemModel(model1.type, model1.data, model1.dataa,true);
+                    ItemModel model = new ItemModel(model1.type, model1.data, model1.dataa,true,model1.activity);
                     Log.e("model", "OneViewHolder: " + model.type);
                     Log.e("model", "OneViewHolder: " + model.data);
                     Log.e("model", "OneViewHolder: " + model.dataa);
@@ -122,14 +128,14 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.BaseViewHolder
                 tv.setText(text);
                 if (getAdapterPosition() == lastPressIndex) {
                     tv.setSelected(true);
-                    tv.setTextColor(Color.parseColor("#e7271c"));
-                    re.setBackgroundResource(R.drawable.jinexuanzhong);
-                    texta.setTextColor(Color.parseColor("#e7271c"));
+                    tv.setTextColor(Color.parseColor("#FFFFFF"));
+                    re.setBackgroundResource(R.drawable.charge_item_selected);
+                    texta.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
                     tv.setSelected(false);
-                    tv.setTextColor(Color.parseColor("#4c4c4c"));
-                    texta.setTextColor(Color.parseColor("#4c4c4c"));
-                    re.setBackgroundResource(R.drawable.jinemoren);
+                    tv.setTextColor(Color.parseColor("#010101"));
+                    texta.setTextColor(Color.parseColor("#010101"));
+                    re.setBackgroundResource(R.drawable.charge_item);
 
                 }
 
@@ -189,7 +195,7 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.BaseViewHolder
                     }
                     if(type==false){
                         String funds = chargeFunds ;
-                        ItemModel model = new ItemModel(ItemModel.THREE, funds, "qita",false);
+                        ItemModel model = new ItemModel(ItemModel.THREE, funds, "qita",false,"");
                         Log.e("model", "OneViewHolder: " + model.type);
                         Log.e("model", "OneViewHolder: " + model.data);
                         Log.e("model", "OneViewHolder: " + model.dataa);

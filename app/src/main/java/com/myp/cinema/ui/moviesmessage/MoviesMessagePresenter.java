@@ -1,14 +1,10 @@
 package com.myp.cinema.ui.moviesmessage;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.CriticBO;
-import com.myp.cinema.entity.DianZancBO;
 import com.myp.cinema.entity.MoviesCommentBO;
 import com.myp.cinema.entity.ShareBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
-import com.myp.cinema.util.LogUtils;
 
 import java.util.List;
 

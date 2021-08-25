@@ -4,21 +4,25 @@ package com.myp.cinema.ui.moviessession;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
@@ -36,6 +40,7 @@ import com.myp.cinema.ui.personorder.PersonOrderActivity;
 import com.myp.cinema.ui.userlogin.LoginActivity;
 import com.myp.cinema.util.ImageUtils;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.ScreenUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.util.TimeUtils;
 import com.myp.cinema.widget.lgrecycleadapter.LGRecycleViewAdapter;
@@ -71,8 +76,6 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
     TextView moviesName;
     @Bind(R.id.movies_message)
     TextView moviesMessage;
-    @Bind(R.id.item_layout)
-    LinearLayout itemLayout;
     @Bind(R.id.session_list)
     ListView sessionList;
     @Bind(R.id.view_pager_parent)
@@ -89,6 +92,15 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
     TextView forverMessage;
     @Bind(R.id.forver_layout)
     LinearLayout forverLayout;
+    @Bind(R.id.scrollView)
+    NestedScrollView scrollView;
+    @Bind(R.id.titleLayout)
+    LinearLayout titleLayout;
+    @Bind(R.id.backImg)
+    ImageView backImg;
+    @Bind(R.id.go_back)
+    LinearLayout go_back;
+
 
     CinemaBo cinemaBo;
     List<MoviesByCidBO> moviesByCidBOs;
@@ -113,7 +125,7 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
         super.onCreate(savedInstanceState);
         goBack();
         cinemaBo = MyApplication.cinemaBo;
-        setTitle(cinemaBo.getCinemaName());
+        cinemaName.setText(cinemaBo.getCinemaName());
         showProgress("加载中...");
         initvion();
 
@@ -142,18 +154,67 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
      */
     private void initvion() {
         sessionList.setOnItemClickListener(this);
+        go_back.setOnClickListener(this);
+        cinemaName.setOnClickListener(this);
         cinemaName.setText(cinemaBo.getCinemaName());
         cinemaAddress.setText(cinemaBo.getAddress());
-        double distance = Double.parseDouble(cinemaBo.getDistance());
-        if (distance < 1000) {
-            cinemaDistance.setText((int) distance + "m");
-        } else {
-            DecimalFormat df = new DecimalFormat("#.00");
-            cinemaDistance.setText(df.format(distance / 1000) + "km");
+        if (cinemaBo.getDistance() != null) {
+            double distance = Double.parseDouble(cinemaBo.getDistance());
+            if (distance < 1000) {
+                cinemaDistance.setText((int) distance + "m");
+            } else {
+                DecimalFormat df = new DecimalFormat("#.00");
+                cinemaDistance.setText(df.format(distance / 1000) + "km");
+            }
+        }else {
+            cinemaDistance.setText("请重新定位");
         }
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         dateRecyle.setLayoutManager(manager);
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int backHeight = viewPagerParent.getMeasuredHeight() / 2;
+                if (scrollY == 0){
+                    titleLayout.setBackgroundColor(Color.parseColor("#00000000"));
+                    cinemaName.setTextColor(Color.parseColor("#ffffff"));
+                    backImg.setImageDrawable(getResources().getDrawable(R.drawable.fanhui));
+                    titleLayout.setAlpha(1);
+                    setStatusBarColor(0);
+                }else if (scrollY > 0 && scrollY <= backHeight) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
+                    float scale = (float) scrollY / backHeight;
+                    titleLayout.setAlpha(scale);
+                    setStatusBarColor(1);
+                    cinemaName.setTextColor(Color.parseColor("#000000"));
+                    titleLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                    backImg.setImageDrawable(getResources().getDrawable(R.mipmap.fanhui1));
+                }else {
+                    titleLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                    cinemaName.setTextColor(Color.parseColor("#000000"));
+                    backImg.setImageDrawable(getResources().getDrawable(R.mipmap.fanhui1));
+                    titleLayout.setAlpha(1);
+                    setStatusBarColor(1);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 设置状态栏字体颜色
+     * @param i
+     */
+    private void setStatusBarColor(int i){
+        //修改字体颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以后可以对状态栏文字颜色和图标进行修改
+            if (i==1) {//黑色状态栏文字
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }else {//白色状态栏文字
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            }
+        }
     }
 
     AlertDialog dialog;
@@ -236,6 +297,10 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
             case R.id.item_layout:   //城市信息
 
                 break;
+            case R.id.go_back:
+            case R.id.cinema_name:
+                finish();
+                break;
         }
     }
 
@@ -281,6 +346,10 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
             @Override
             public void convert(LGViewHolder holder, MoviesByCidBO s, int position) {
                 ImageView moviesImg = (ImageView) holder.getView(R.id.movies_img);
+                ViewGroup.LayoutParams params = moviesImg.getLayoutParams();
+                params.width = (int)(ScreenUtils.getScreenWidth() * 0.3);
+                params.height = (int)(ScreenUtils.getScreenWidth() * 0.42);
+                moviesImg.setLayoutParams(params);
                 if (StringUtils.isEmpty(s.getPicture())) {
                     moviesImg.setImageResource(R.color.white);
                 } else {
@@ -303,7 +372,7 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
      */
     private void setImgBG(final String headerImageUrl) {
         if (StringUtils.isEmpty(headerImageUrl)) {
-            recyle.setBackgroundColor(getResources().getColor(R.color.act_bg01));
+            viewPagerParent.setBackgroundColor(getResources().getColor(R.color.act_bg01));
         } else {
             new Thread(new Runnable() {
                 @Override
@@ -323,8 +392,8 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 Bitmap newBitmap = ImageUtils.fastBlur((Bitmap) msg.obj, 0.3f, 25, true);
-                if (newBitmap != null && recyle != null) {
-                    recyle.setBackground(new BitmapDrawable(newBitmap));
+                if (newBitmap != null && viewPagerParent != null) {
+                    viewPagerParent.setBackground(new BitmapDrawable(newBitmap));
                 }
             }
         }
@@ -340,7 +409,14 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
         } else {
             moviesName.setText(movies.getUniqueName());
         }
-        moviesMessage.setText(movies.getSummary());
+        if (movies.getDxActors() != null && movies.getDxActors().size()>0){
+            StringBuilder stringBuffer = new StringBuilder();
+            for (int i = 0; i < movies.getDxActors().size(); i++) {
+                stringBuffer.append(movies.getDxActors().get(i).getName().trim()).append(",");
+            }
+            String actors = stringBuffer.substring(0, stringBuffer.length() - 1);
+            moviesMessage.setText(String.format("%s分钟 | %s | %s",movies.getPlayTime(),movies.getMovieType(),actors));
+        }
         mPresenter.loadMoviesSession(cinemaBo.getCinemaId(), movies.getId());
     }
 
@@ -392,7 +468,7 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
             protected void convert(ViewHolder helper, MoviesSessionBO item, int position) {
                 helper.setText(R.id.start_time, item.getStartTime().split(" ")[1].substring(0, 5));
                 helper.setText(R.id.stop_time, item.getEndTime().split(" ")[1].substring(0, 5) + "散场");
-                helper.setText(R.id.movie_langvige, item.getMovieLanguage());
+                helper.setText(R.id.movie_langvige, item.getMovieLanguage()+item.getMovieDimensional());
                 helper.setText(R.id.movie_ting, item.getHallName());
                 if (item.getPartnerPrice() == null) {
                     helper.setText(R.id.movie_price, item.getMarketPrice());
@@ -421,7 +497,6 @@ public class SessionActivity extends MVPBaseActivity<SessionContract.View, Sessi
                 } else {
                     helper.setText(R.id.cinema_price, "会员价：" + item.getPreferPrice());
                 }
-                helper.getView(R.id.moives_type).setVisibility(View.VISIBLE);
                 switch (item.getMovieDimensional()) {
                     case "2D":
                         helper.setImageResource(R.id.moives_type, R.drawable.img_2d);

@@ -1,7 +1,7 @@
 package com.myp.cinema.ui.personorder;
 
 import com.myp.cinema.api.HttpInterfaceIml;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.LockSeatsBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import rx.Subscriber;
 public class completedPresenter extends BasePresenterImpl<completedContract.View> implements completedContract.Presenter{
 
     @Override
-    public void loadOrderList( final int page) {
-        HttpInterfaceIml.orderList("1", page + "").subscribe(new Subscriber<List<OrderBO>>() {
+    public void loadOrderList(String orderType,String payStatus,int orderPage,String orderSize) {
+        HttpInterfaceIml.orderList(orderType, payStatus,orderPage,orderSize).subscribe(new Subscriber<List<LockSeatsBO>>() {
             @Override
             public void onCompleted() {
                 if (mView == null)
@@ -32,10 +32,10 @@ public class completedPresenter extends BasePresenterImpl<completedContract.View
             }
 
             @Override
-            public void onNext(List<OrderBO> s) {
+            public void onNext(List<LockSeatsBO> s) {
                 if (mView == null)
                     return;
-                mView.getOrderList(s,  page);
+                mView.getOrderList(s);
             }
         });
     }

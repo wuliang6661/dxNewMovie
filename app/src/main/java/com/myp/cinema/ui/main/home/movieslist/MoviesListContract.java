@@ -1,7 +1,7 @@
 package com.myp.cinema.ui.main.home.movieslist;
 
+import com.myp.cinema.entity.ActivityBO;
 import com.myp.cinema.entity.LunBoAndBO;
-import com.myp.cinema.entity.LunBoBO;
 import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
@@ -20,6 +20,7 @@ public class MoviesListContract {
 
         void getLunBo(LunBoAndBO lunBoAndBOs);
 
+        void getActivity(ActivityBO activityBO);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -27,5 +28,7 @@ public class MoviesListContract {
         void moviesHot(String cinemaId);
 
         void lunboList(String scoce,String cinemaId);
+
+        void loadActivity(String cinemaId);
     }
 }

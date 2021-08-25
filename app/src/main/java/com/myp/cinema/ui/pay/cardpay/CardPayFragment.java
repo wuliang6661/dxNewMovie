@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,19 @@ import android.widget.TextView;
 import com.myp.cinema.R;
 import com.myp.cinema.config.LocalConfiguration;
 import com.myp.cinema.entity.CardBO;
-import com.myp.cinema.entity.OrderBO;
+import com.myp.cinema.entity.ConfirmPayBO;
 import com.myp.cinema.entity.PayCardBO;
 import com.myp.cinema.entity.ResuBo;
+import com.myp.cinema.entity.SubmitPrdectOrderBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
+import com.myp.cinema.ui.prodectorder.ProdectOrderSuccess;
 import com.myp.cinema.ui.rechatge.rechatge;
 import com.myp.cinema.ui.membercard.AddCardActiivty;
 import com.myp.cinema.ui.orderconfrim.OrderSurcessActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.MD5;
 import com.myp.cinema.util.StringUtils;
+import com.myp.cinema.util.ToastUtils;
 import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
 
@@ -60,9 +62,10 @@ public class CardPayFragment extends MVPBaseFragment<CardPayContract.View, CardP
 
     List<CardBO> cardBOs;
     CommonAdapter<CardBO> adapter;
-    OrderBO orderBO;    //订单信息
+    ConfirmPayBO orderBO;    //订单信息
     PayCardBO payCardBO;    //支付信息
     CardBO cardBO;    //选中支付的会员卡
+    private SubmitPrdectOrderBO submitPrdectOrderBO;
     private String cardcode;
     private String cardPrice;
     private String cardNumber;
@@ -181,11 +184,19 @@ public class CardPayFragment extends MVPBaseFragment<CardPayContract.View, CardP
     public void getPayCard(ResuBo pay) {
         if(pay.getResultX()==1){
             LogUtils.showToast("支付成功");
-            Intent intent = new Intent(getActivity(),OrderSurcessActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("order", orderBO.getOrderNum());
-            intent.putExtras(bundle);     //将bundle传入intent中。
-            startActivity(intent);
+            if (orderBO != null) {
+                Intent intent = new Intent(getActivity(),OrderSurcessActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("order", orderBO.getOrderNum());
+                intent.putExtras(bundle);     //将bundle传入intent中。
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(getActivity(),ProdectOrderSuccess.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("order", submitPrdectOrderBO.getOrderNum());
+                intent.putExtras(bundle);     //将bundle传入intent中。
+                startActivity(intent);
+            }
         }else {
 
         }
@@ -221,17 +232,39 @@ public class CardPayFragment extends MVPBaseFragment<CardPayContract.View, CardP
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (Double.parseDouble(payCardBO.getTotalPrice()) == 0 ){
+            ToastUtils.showShortToast("0元支付不能使用会员卡");
+            return;
+        }
         showProgress("加载中...");
         this.cardBO = cardBOs.get(position);
         cardPrice = cardBOs.get(position).getBalance();
-        cardcode=orderBO.getOrderNum();
         cardNumber=cardBOs.get(position).getCardNumber();
-        mPresenter.loadCardPay(orderBO.getOrderNum(), cardBOs.get(position).getCardNumber());
+        if (orderBO != null) {
+            cardcode = orderBO.getOrderNum();
+            mPresenter.loadCardPay(orderBO.getOrderNum(), cardBOs.get(position).getCardNumber());
+        }else {
+            cardcode = submitPrdectOrderBO.getOrderNum();
+            mPresenter.loadCardPay(submitPrdectOrderBO.getOrderNum(), cardBOs.get(position).getCardNumber());
+        }
+
     }
 
 
-    public void setOrderBO(OrderBO orderBO) {
+    /**
+     * 电影票订单
+     * @param orderBO
+     */
+    public void setOrderBO(ConfirmPayBO orderBO) {
         this.orderBO = orderBO;
+    }
+
+    /**
+     * 食品订单
+     * @param submitPrdectOrderBO
+     */
+    public void setProdectBO(SubmitPrdectOrderBO submitPrdectOrderBO){
+        this.submitPrdectOrderBO = submitPrdectOrderBO;
     }
 
     AlertDialog dialog;
@@ -265,7 +298,11 @@ public class CardPayFragment extends MVPBaseFragment<CardPayContract.View, CardP
                 } else {
                     dialog.dismiss();
                     showProgress("付款中...");
-                    mPresenter.payCard(orderBO.getOrderNum(), MD5.strToMd5Low32(pwd), cardBO.getCardNumber());
+                    if (orderBO != null) {
+                        mPresenter.payCard(orderBO.getOrderNum(), MD5.strToMd5Low32(pwd), cardBO.getCardNumber());
+                    }else {
+                        mPresenter.payCard(submitPrdectOrderBO.getOrderNum(), MD5.strToMd5Low32(pwd), cardBO.getCardNumber());
+                    }
                 }
             }
         });

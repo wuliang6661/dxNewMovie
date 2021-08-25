@@ -17,6 +17,7 @@ import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.config.ConditionEnum;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
+import com.myp.cinema.ui.InfoActivity;
 import com.myp.cinema.ui.personsetting.personupdate.PersonUpdateActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.StringUtils;
@@ -53,6 +54,8 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingContract
     RelativeLayout personNameLayout;
     @Bind(R.id.person_sex_layout)
     RelativeLayout personSexLayout;
+    @Bind(R.id.security)
+    RelativeLayout security;
 
     UserBO userBO = MyApplication.user;
 
@@ -82,6 +85,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingContract
         updatePassword.setOnClickListener(this);
         personNameLayout.setOnClickListener(this);
         personSexLayout.setOnClickListener(this);
+        security.setOnClickListener(this);
     }
 
 
@@ -129,6 +133,9 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingContract
                 break;
             case R.id.person_sex_layout:   //修改性别
                 showAleetDialog();
+                break;
+            case R.id.security:
+                startActivity(new Intent(this, InfoActivity.class));
                 break;
         }
     }

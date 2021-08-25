@@ -1,9 +1,6 @@
 package com.myp.cinema.entity;
 
-import com.mob.tools.utils.Data;
-
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  * Created by Administrator on 2018/3/1.

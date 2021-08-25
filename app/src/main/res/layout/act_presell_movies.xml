@@ -58,107 +58,119 @@
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/movie_img_bac"
+            <RelativeLayout
+                android:id="@+id/rlTitle"
+                android:layout_height="210dp"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/movies_detail_bg"
-                android:gravity="bottom"
-                android:orientation="horizontal">
-
+                android:background="#ffffff">
+                <View
+                    android:id="@+id/titleBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="17dp"
+                    android:background="@drawable/movies_detail_bg"/>
                 <ImageView
                     android:id="@+id/movie_img"
                     android:layout_width="96dp"
                     android:layout_height="134dp"
-                    android:layout_marginLeft="@dimen/margin_top"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="10dp"
                     android:background="@drawable/zhanwei1"
                     android:scaleType="fitXY" />
 
-
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_top"
-                    android:layout_marginRight="@dimen/margin_top"
-                    android:layout_toRightOf="@+id/movie_img_layout"
-                    android:orientation="vertical">
+                    android:id="@+id/movie_img_bac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="193dp"
+                    android:layout_toEndOf="@id/movie_img"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="14dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="11dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="@dimen/margin_top"
+                        android:layout_marginRight="@dimen/margin_top"
+                        android:layout_marginBottom="27dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="11dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/movies_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="拆弹专家"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <ImageView
+                                android:id="@+id/movie_type_img"
+                                android:layout_width="49dp"
+                                android:layout_height="17dp"
+                                android:layout_marginLeft="@dimen/margin_top"
+                                android:background="@drawable/img_2d" />
+
+
+                        </LinearLayout>
+
 
                         <TextView
-                            android:id="@+id/movies_name"
-                            android:layout_width="0dp"
+                            android:id="@+id/movie_intro"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_marginTop="9dp"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="拆弹专家"
+                            android:text="拆弹专家追击炸弹狂徒"
                             android:textColor="@color/white"
-                            android:textSize="18dp" />
+                            android:textSize="@dimen/text_center" />
 
-                        <ImageView
-                            android:id="@+id/movie_type_img"
-                            android:layout_width="49dp"
-                            android:layout_height="17dp"
-                            android:layout_marginLeft="@dimen/margin_top"
-                            android:background="@drawable/img_2d" />
 
+                        <TextView
+                            android:id="@+id/movie_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="动作 惊悚 犯罪"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_small" />
+
+                        <TextView
+                            android:id="@+id/movie_start_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="2017-4-17在中国大陆上映 "
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_small" />
+
+
+                        <TextView
+                            android:id="@+id/movie_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="9dp"
+                            android:text="时长 | 136分钟"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_small" />
 
                     </LinearLayout>
-
-
-                    <TextView
-                        android:id="@+id/movie_intro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_top"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="拆弹专家追击炸弹狂徒"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_center" />
-
-
-                    <TextView
-                        android:id="@+id/movie_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="动作 惊悚 犯罪"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_small" />
-
-                    <TextView
-                        android:id="@+id/movie_start_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="2017-4-17在中国大陆上映 "
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_small" />
-
-
-                    <TextView
-                        android:id="@+id/movie_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="9dp"
-                        android:text="时长 | 136分钟"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_small" />
-
                 </LinearLayout>
-            </LinearLayout>
-
+            </RelativeLayout>
             <include layout="@layout/movies_content_view" />
 
         </LinearLayout>

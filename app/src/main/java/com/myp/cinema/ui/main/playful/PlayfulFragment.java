@@ -31,8 +31,6 @@ import com.myp.cinema.mvp.MVPBaseFragment;
 import com.myp.cinema.ui.WebViewActivity;
 import com.myp.cinema.ui.moviesmessage.MoviesMessageActivity;
 import com.myp.cinema.ui.playgame.PlayGameActivity;
-import com.myp.cinema.ui.signin.SignInActivity;
-import com.myp.cinema.ui.somepeople.SomePeopleActivity;
 import com.myp.cinema.ui.userlogin.LoginActivity;
 import com.myp.cinema.util.DividerGridItemDecoration;
 import com.myp.cinema.util.LogUtils;

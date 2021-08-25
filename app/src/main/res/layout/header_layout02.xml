@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="@drawable/title_bg"
+    android:layout_height="80dp"
+    android:background="#ffffff"
     android:gravity="bottom"
     android:orientation="vertical">
-
+    <!--  android:background="@drawable/title_bg" -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="17dp"
-                android:background="@drawable/fanhui" />
+                android:background="@mipmap/fanhui1" />
 
         </LinearLayout>
 
@@ -40,8 +40,9 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_header" />
+            android:textColor="#161616"
+            android:textStyle="bold"
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/fenxiang_img"

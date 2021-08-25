@@ -1,16 +1,12 @@
 package com.myp.cinema.mvp;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 
 import com.myp.cinema.base.BaseActivity;
 
 import java.lang.reflect.ParameterizedType;
-
-import butterknife.ButterKnife;
 
 
 /**

@@ -21,27 +21,20 @@ import android.widget.Toast;
 
 import com.mob.tools.utils.UIHandler;
 import com.myp.cinema.R;
-import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.config.ConditionEnum;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.MVPBaseActivity;
-import com.myp.cinema.ui.phonecode.MessageEvent;
-import com.myp.cinema.ui.phonecode.phonecode;
 import com.myp.cinema.ui.phonecode.phonecode2;
-import com.myp.cinema.ui.phonecode2two.phonecode2two;
 import com.myp.cinema.ui.userforwordpass.VerifyActivity;
 import com.myp.cinema.ui.userregister.RegisterActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.MD5;
 import com.myp.cinema.util.RegexUtils;
 import com.myp.cinema.util.StringUtils;
-import com.myp.cinema.wxapi.WXUtils;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.Tencent;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +46,6 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
-import rx.Subscriber;
 
 import static android.R.attr.action;
 
@@ -270,7 +262,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
      * @return
      */
     private boolean isLogin() {
-        if (!RegexUtils.isMobileExact(phone)) {
+        if (!phone.startsWith("1") || phone.length() != 11) {
             LogUtils.showToast("请输入正确的手机号码！");
             return false;
         }
@@ -334,6 +326,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 userId = platform.getDb().getUserId();//获取用户账号
                 userName = platform.getDb().getUserName();//获取用户名字
                 userIcon = platform.getDb().getUserIcon();//获取用户头像
+                Log.d("sdfkasjdfkl", "setDatas: "+userIcon);
                 userGender = platform.getDb().getUserGender();
                 if (style == 1) {
                     wxUserId = null;

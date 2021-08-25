@@ -20,7 +20,6 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -99,6 +98,20 @@ public class SeatTable extends View {
      * 选中时座位的图片
      */
     Bitmap checkedSeatBitmap;
+    /**
+     * 不可用座位的图片
+     */
+    Bitmap seatNotAvailableBitmap;
+
+    /**
+     * 不可用座位的图片左
+     */
+    Bitmap leftSeatNotAvailableBitmap;
+
+    /**
+     * 不可用座位的图片右
+     */
+    Bitmap rightSeatNotAvailableBitmap;
     /**
      * 情侣坐
      */
@@ -231,6 +244,9 @@ public class SeatTable extends View {
     int overview_sold;
     int txt_color;
     int seatCheckedResID;
+    int seatNotAvailableId;
+    int leftSeatNotAvailableId;
+    int rightSeatNotAvailableId;
     int seatSoldResID;
     int seatAvailableResID;
     int seatFriendsResID;
@@ -245,25 +261,25 @@ public class SeatTable extends View {
     /**
      * 座位已售
      */
-    private static final int SEAT_TYPE_SOLD = 1;
+    public static final int SEAT_TYPE_SOLD = 1;
 
     /**
      * 座位已经选中
      */
-    private static final int SEAT_TYPE_SELECTED = 2;
+    public static final int SEAT_TYPE_SELECTED = 2;
 
     /**
      * 座位可选
      */
-    private static final int SEAT_TYPE_AVAILABLE = 3;
+    public static final int SEAT_TYPE_AVAILABLE = 3;
 
     /**
      * 座位不可用
      */
-    private static final int SEAT_TYPE_NOT_AVAILABLE = 4;
+    public static final int SEAT_TYPE_NOT_AVAILABLE = 4;
     private static final int SEAT_TYPE_FRIEND_LEFT = 5;
     private static final int SEAT_TYPE_FRIEND_RIGHT = 6;
-
+    public static final int SEAT_LOCKED = 7;
 
     private int downX, downY;
     private boolean pointer;
@@ -285,12 +301,12 @@ public class SeatTable extends View {
     /**
      * 默认的座位图宽度,如果使用的自己的座位图片比这个尺寸大或者小,会缩放到这个大小
      */
-    private float defaultImgW = 64;
+    private float defaultImgW = 74;
 
     /**
      * 默认的座位图高度
      */
-    private float defaultImgH = 62;
+    private float defaultImgH = 72;
 
     /**
      * 座位图片的宽度
@@ -317,6 +333,9 @@ public class SeatTable extends View {
         overview_sold = typedArray.getColor(R.styleable.SeatTableView_overview_sold, Color.RED);
         overview_friends = typedArray.getColor(R.styleable.SeatTableView_overview_sold, Color.parseColor("#36BADB"));
         txt_color = typedArray.getColor(R.styleable.SeatTableView_txt_color, Color.WHITE);
+        seatNotAvailableId = typedArray.getResourceId(R.styleable.SeatTableView_seat_not_available,R.mipmap.not_available_seat);
+        leftSeatNotAvailableId = typedArray.getResourceId(R.styleable.SeatTableView_left_seat_not_available,R.mipmap.not_avaliable_left);
+        rightSeatNotAvailableId= typedArray.getResourceId(R.styleable.SeatTableView_right_seat_not_available,R.mipmap.not_avaliable_right);
         seatCheckedResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_checked, R.drawable.seat_green);
         seatSoldResID = typedArray.getResourceId(R.styleable.SeatTableView_overview_sold, R.drawable.seat_sold);
         seatAvailableResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_available, R.drawable.seat_gray);
@@ -368,6 +387,9 @@ public class SeatTable extends View {
 
         checkedSeatBitmap = BitmapFactory.decodeResource(getResources(), seatCheckedResID);
         seatSoldBitmap = BitmapFactory.decodeResource(getResources(), seatSoldResID);
+        seatNotAvailableBitmap = BitmapFactory.decodeResource(getResources(),seatNotAvailableId);
+        leftSeatNotAvailableBitmap = BitmapFactory.decodeResource(getResources(),leftSeatNotAvailableId);
+        rightSeatNotAvailableBitmap = BitmapFactory.decodeResource(getResources(),rightSeatNotAvailableId);
 
         seatBitmapWidth = (int) (column * seatBitmap.getWidth() * xScale1 + (column - 1) * spacing);
         seatBitmapHeight = (int) (row * seatBitmap.getHeight() * yScale1 + (row - 1) * verSpacing);
@@ -382,7 +404,7 @@ public class SeatTable extends View {
         headPaint = new Paint();
         headPaint.setStyle(Paint.Style.FILL);
         headPaint.setTextSize(dip2Px(12));
-        headPaint.setColor(Color.WHITE);
+        headPaint.setColor(Color.parseColor("#f0f0f0"));
         headPaint.setAntiAlias(true);
 
         pathPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -537,7 +559,7 @@ public class SeatTable extends View {
         //绘制背景
         canvas.drawRect(0, 0, getWidth(), headHeight, headPaint);
         headPaint.setColor(Color.BLACK);
-        float startX = (getWidth() - width) / 2;
+        float startX = (getWidth() - width) / 2 - 20;
         tempMatrix.setScale(xScale1, yScale1);
         tempMatrix.postTranslate(startX, (headHeight - seatHeight) / 2);
         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, headPaint);
@@ -555,11 +577,11 @@ public class SeatTable extends View {
         canvas.drawBitmap(seatBitmap, tempMatrix, headPaint);
         canvas.drawText("可选", checkedSeatBitmapX + spacing1 + seatWidth, txtY, headPaint);
 
-        float friendBitmapX = checkedSeatBitmapX + checkedSeatBitmap.getWidth() + spacing1 + txtWidth + spacing - 15;
+        float friendBitmapX = checkedSeatBitmapX + checkedSeatBitmap.getWidth() + spacing1 + txtWidth + spacing;
         tempMatrix.setScale(xScale1 * 1.5f, yScale1 * 1.5f);
         tempMatrix.postTranslate(friendBitmapX, (headHeight - seatHeight) / 2 + 8);
         canvas.drawBitmap(friendBitmap, tempMatrix, headPaint);
-        canvas.drawText("情侣座", friendBitmapX + spacing1 + seatWidth + 25, txtY, headPaint);
+        canvas.drawText("情侣座", friendBitmapX + spacing1 + seatWidth + 40, txtY, headPaint);
         //绘制分割线
         headPaint.setStrokeWidth(1);
         headPaint.setColor(Color.GRAY);
@@ -669,6 +691,15 @@ public class SeatTable extends View {
                         break;
                     case SEAT_TYPE_NOT_AVAILABLE:
                         break;
+                    case SEAT_LOCKED://座位锁定
+                        if (seatChecker.isFriends(i, j) == 1) {
+                            canvas.drawBitmap(leftSeatNotAvailableBitmap, tempMatrix, paint);
+                        } else if (seatChecker.isFriends(i, j) == 2) {
+                            canvas.drawBitmap(rightSeatNotAvailableBitmap, tempMatrix, paint);
+                        } else {
+                            canvas.drawBitmap(seatNotAvailableBitmap, tempMatrix, paint);
+                        }
+                        break;
                     case SEAT_TYPE_FRIEND_LEFT:   //左边情侣座
                         canvas.drawBitmap(friendBitmapLeft, tempMatrix, paint);
                         break;
@@ -709,6 +740,8 @@ public class SeatTable extends View {
         if (seatChecker != null) {
             if (!seatChecker.isValidSeat(row, column)) {
                 return SEAT_TYPE_NOT_AVAILABLE;
+            } else if(seatChecker.isNotAvailable(row,column)){//不可用
+                return SEAT_LOCKED;
             } else if (seatChecker.isSold(row, column)) {
                 return SEAT_TYPE_SOLD;
             } else if (seatChecker.isFriends(row, column) == 1) {  //左边情侣座
@@ -873,6 +906,9 @@ public class SeatTable extends View {
                         break;
                     case SEAT_TYPE_NOT_AVAILABLE:
                         continue;
+                    case SEAT_LOCKED:
+                        overviewPaint.setColor(overview_checked);
+                        break;
                     case SEAT_TYPE_SELECTED:
                         overviewPaint.setColor(overview_checked);
                         break;
@@ -1282,6 +1318,9 @@ public class SeatTable extends View {
          * @return
          */
         boolean isValidSeat(int row, int column);
+
+        /** 座位不可用 **/
+        boolean isNotAvailable(int row, int column);
 
         /**
          * 是否已售

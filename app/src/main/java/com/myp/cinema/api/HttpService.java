@@ -7,7 +7,6 @@ import java.util.List;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -19,12 +18,13 @@ import rx.Observable;
 
 interface HttpService {
 
-//        String URL = "http://api.platform.yinghezhong.com/";   //测试服
     String URL = "http://api.open.yinghezhong.com/";  //正式环境
-//        String _AUCHTODE = "4=NA>kUIW?";   //测试
-//    String PID = "90073";           //测试
     String _AUCHTODE = "a>N/+_gNYE";   //正式环境
     String PID = "11134";               //正式环境
+//    String URL = "http://api.platform.yinghezhong.com/";   //测试服
+//    String _AUCHTODE = "4=NA>kUIW?";   //测试
+//    String PID = "90073";           //测试
+
 
     /**
      * 获取某场次座位状态

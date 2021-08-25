@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.base.BaseActivity;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.config.ConditionEnum;
-import com.myp.cinema.entity.UserBO;
+import com.myp.cinema.entity.PicVerificBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.ui.main.MainActivity;
 import com.myp.cinema.ui.phonecode2two.phonecode2two;
@@ -63,6 +63,10 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
     Button getVerification;
     @Bind(R.id.register_button)
     Button registerButton;
+    @Bind(R.id.picCode)
+    EditText picCode;//图文验证
+    @Bind(R.id.ivCode)
+    ImageView ivCode;//图文验证
 
 
     private String userId;
@@ -95,6 +99,8 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
         userGender = bundle.getString("userGender");
         registerButton.setOnClickListener(this);
         getVerification.setOnClickListener(this);
+        ivCode.setOnClickListener(this);
+        getPicVersition();
     }
 
     @Override
@@ -108,15 +114,21 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.get_verification:
-                if (RegexUtils.isMobileExact(phone)) {
-                    getVersition();
-                    timer.start();
-                    getVerification.setEnabled(false);
+                if (phone.startsWith("1") && phone.length() == 11) {
+                    if (StringUtils.isEmpty(picCode.getText().toString())){
+                        LogUtils.showToast("图文验证码错误！");
+                    }else {
+                        getVersition();
+                    }
                 } else {
                     LogUtils.showToast("请输入正确的手机号！");
                 }
                 break;
-
+            case R.id.ivCode:
+                getPicVersition();
+                break;
+            default:
+                break;
         }
     }
 
@@ -125,7 +137,7 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
      * 获取验证码
      */
     private void getVersition() {
-        HttpInterfaceIml.userVerification(phone, "register").subscribe(new Subscriber<String>() {
+        HttpInterfaceIml.userVerification(phone, "register",picCode.getText().toString()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
 
@@ -139,10 +151,36 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
             @Override
             public void onNext(String s) {
                 loadVersition = s;
+                timer.start();
+                getVerification.setEnabled(false);
             }
         });
     }
 
+
+    /**
+     * 获取图文验证码
+     */
+    private void getPicVersition() {
+        HttpInterfaceIml.picVerification().subscribe(new Subscriber<PicVerificBO>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(PicVerificBO s) {
+                if (s != null) {
+                    Glide.with(phonecode2.this).load(s.getPath()).into(ivCode);
+                }
+            }
+        });
+    }
 
     /**
      * 身份验证
@@ -164,7 +202,7 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
             qqUserId = null;
         }
 
-        HttpInterfaceIml.phonebinding(phone,wxUserId, wbUserId, qqUserId, versition).subscribe(new Subscriber<threelandingBo>() {
+        HttpInterfaceIml.phonebinding(userIcon,phone,wxUserId, wbUserId, qqUserId, versition).subscribe(new Subscriber<threelandingBo>() {
             @Override
             public void onCompleted() {
 
@@ -186,6 +224,9 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
                     MyApplication.user = s.getData();
                     MyApplication.spUtils.put("uuid", s.getData().getUuid());
                     MyApplication.isLogin = ConditionEnum.LOGIN;
+                    if (s.getData().getAlertPhoto() != null) {
+                        MyApplication.alertPhoto = s.getData().getAlertPhoto();
+                    }
                     startActivity(back);
                     finsh();
                 }else {
@@ -221,10 +262,6 @@ public class phonecode2 extends BaseActivity implements View.OnClickListener {
     private boolean isRegister() {
         if (!RegexUtils.isMobileExact(phone)) {
             LogUtils.showToast("请输入正确的手机号！");
-            return false;
-        }
-        if (StringUtils.isEmpty(versition) || !versition.equals(loadVersition)) {
-            LogUtils.showToast("验证码错误！");
             return false;
         }
         return true;

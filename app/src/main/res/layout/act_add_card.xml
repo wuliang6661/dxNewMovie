@@ -3,38 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:gravity="center_horizontal"
     android:orientation="vertical">
 
 
     <include layout="@layout/header_layout02" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/new_member_card"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="14dp"
+        android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/edit_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="17dp"
-            android:layout_marginLeft="6dp"
-            android:background="@drawable/huiyuanka01" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@mipmap/new_card_number" />
 
         <EditText
             android:id="@+id/card_num_edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
+            android:layout_marginStart="15dp"
             android:background="#00000000"
             android:gravity="center_vertical"
-            android:hint="请输入会员卡号"
+            android:hint="请输入会员卡号/手机号"
             android:singleLine="true"
             android:textColor="@color/text_big"
             android:textColorHint="@color/text_style01"
@@ -45,29 +51,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginTop="@dimen/margin_top"
+        android:layout_height="40dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/edit_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="17dp"
-            android:layout_marginLeft="6dp"
-            android:background="@drawable/mima01" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:background="@mipmap/new_card_password" />
 
         <EditText
             android:id="@+id/password_edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
+            android:layout_marginStart="15dp"
             android:background="#00000000"
             android:gravity="center_vertical"
-            android:hint="请输入密码"
+            android:hint="输入你的会员卡密码"
             android:password="true"
             android:singleLine="true"
             android:textColor="@color/text_big"
@@ -76,42 +82,44 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="注：请及时至影城前台更新个人信息"
-        android:textColor="#EB5E3A"
-        android:textSize="@dimen/text12" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="* 登陆后，绑定影城会员卡，可享受会员价购买！"
-        android:textColor="@color/text_small"
-        android:textSize="@dimen/text12" />
-
-
-    <LinearLayout
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_height="40dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/change_color_coner"
+        android:text="绑   定   会   员   卡"
+        android:textSize="15sp"
+        android:textColor="#FEFCFC" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="绑卡说明:"
+        android:textColor="#6F6F6F"
+        android:textSize="14sp"
+        android:layout_marginTop="26dp"
+        android:layout_marginStart="47dp"/>
 
-        <TextView
-            android:id="@+id/submit_button"
-            android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:layout_alignParentBottom="true"
-            android:background="#0d0d0d"
-            android:gravity="center"
-            android:text="确定"
-            android:textColor="#32b8e8"
-            android:textSize="16dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="47dp"
+        android:text="1.请及时至影城前台更新个人信息"
+        android:textColor="#6F6F6F"
+        android:textSize="12sp" />
 
-
-    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="47dp"
+        android:text="2.登陆后，绑定影城会员卡，可享受会员价购买。"
+        android:textColor="#6F6F6F"
+        android:textSize="12sp" />
 
 
 </LinearLayout>

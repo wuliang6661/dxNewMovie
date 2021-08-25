@@ -5,8 +5,6 @@ import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
 
-import java.util.List;
-
 /**
  * MVPPlugin
  * Wuliang

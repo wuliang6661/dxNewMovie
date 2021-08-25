@@ -10,18 +10,25 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
 import com.myp.cinema.R;
+import com.myp.cinema.api.HttpInterfaceIml;
+import com.myp.cinema.base.MyApplication;
+import com.myp.cinema.entity.PicVerificBO;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.MD5;
 import com.myp.cinema.util.RegexUtils;
 import com.myp.cinema.util.StringUtils;
+import com.myp.cinema.util.ToastUtils;
 
 import butterknife.Bind;
+import rx.Subscriber;
 
 
 /**
@@ -41,6 +48,8 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
     Button getVerification;
     @Bind(R.id.password_edit)
     EditText passwordEdit;
+    @Bind(R.id.passwordConfirm)
+    EditText passwordConfirm;//确认密码
     @Bind(R.id.radio_nan)
     RadioButton radioNan;
     @Bind(R.id.radio_nv)
@@ -51,6 +60,10 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
     CheckBox checkbox;
     @Bind(R.id.register_button)
     Button registerButton;
+    @Bind(R.id.picCode)
+    EditText picCode;//图文验证
+    @Bind(R.id.ivCode)
+    ImageView ivCode;//图文验证
 
     String phone = "";
     String password = "";
@@ -75,6 +88,9 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
         checkbox.setOnCheckedChangeListener(this);
         radioLayout.setOnCheckedChangeListener(this);
         registerButton.setOnClickListener(this);
+        ivCode.setOnClickListener(this);
+
+        getPicVersition();
     }
 
 
@@ -85,18 +101,29 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
         editVersition = verificationEdit.getText().toString().trim();
         switch (v.getId()) {
             case R.id.get_verification:  //获取验证码
-                if (RegexUtils.isMobileExact(phone)) {
-                    mPresenter.loadVersition(phone);
-                    timer.start();
-                    getVerification.setEnabled(false);
+                if (phone.startsWith("1") && phone.length() == 11) {
+                    if (StringUtils.isEmpty(picCode.getText().toString())){
+                        LogUtils.showToast("图文验证码错误！");
+                    }else {
+                        mPresenter.loadVersition(phone,picCode.getText().toString());
+                    }
                 } else {
                     LogUtils.showToast("请输入正确的手机号");
                 }
                 break;
             case R.id.register_button:
                 if (isSubmit()) {
-                    mPresenter.loadRegisterUser(phone, MD5.strToMd5Low32(password), editVersition, sex);
+                    if (MyApplication.cinemaBo != null){
+                        mPresenter.loadRegisterUser(MyApplication.cinemaBo.getCinemaId(), phone, MD5.strToMd5Low32(password), editVersition, sex);
+                    }else {
+                        ToastUtils.showShortToast("请先选择影院");
+                    }
                 }
+                break;
+            case R.id.ivCode:
+                getPicVersition();
+                break;
+            default:
                 break;
         }
     }
@@ -118,6 +145,30 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
 
 
     /**
+     * 获取图文验证码
+     */
+    private void getPicVersition() {
+        HttpInterfaceIml.picVerification().subscribe(new Subscriber<PicVerificBO>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(PicVerificBO s) {
+                if (s != null) {
+                    Glide.with(RegisterActivity.this).load(s.getPath()).into(ivCode);
+                }
+            }
+        });
+    }
+
+    /**
      * 请求返回的验证码
      *
      * @param version
@@ -125,6 +176,8 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
     @Override
     public void getVersition(String version) {
         versition = version;
+        timer.start();
+        getVerification.setEnabled(false);
     }
 
     /**
@@ -137,13 +190,16 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
         Intent intent = new Intent();
         intent.putExtra("user", user);
         setResult(1, intent);
+        if (user.getAlertPhoto() != null) {
+            MyApplication.alertPhoto = user.getAlertPhoto();
+        }
         finish();
     }
 
 
     private boolean isSubmit() {
-        if (!RegexUtils.isMobileExact(phone)) {
-            LogUtils.showToast("请输入正确的手机号!");
+        if (!phone.startsWith("1") || phone.length() != 11) {
+            LogUtils.showToast("请输入正确的手机号码！");
             return false;
         }
         if (StringUtils.isEmpty(password)) {
@@ -154,14 +210,14 @@ public class RegisterActivity extends MVPBaseActivity<RegisterContract.View, Reg
             LogUtils.showToast("密码长度要在6-20位!");
             return false;
         }
-        if (StringUtils.isEmpty(editVersition) || !editVersition.equals(versition)) {
-            LogUtils.showToast("请输入正确的验证码！");
+        if (!password.equals(passwordConfirm.getText().toString())){
+            LogUtils.showToast("两次输入的密码不一致!");
             return false;
         }
-        if (!isCheck) {
-            LogUtils.showToast("请同意《德信影城服务条款》!");
-            return false;
-        }
+//        if (!isCheck) {
+//            LogUtils.showToast("请同意《德信影城服务条款》!");
+//            return false;
+//        }
         return true;
     }
 

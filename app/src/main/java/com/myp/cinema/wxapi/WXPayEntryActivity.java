@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.myp.cinema.config.LocalConfiguration;
+import com.myp.cinema.jpush.MessageEvent;
 import com.myp.cinema.ui.paysuccess.PaysuccessActivity;
 import com.myp.cinema.ui.orderconfrim.OrderSurcessActivity;
+import com.myp.cinema.ui.prodectorder.ProdectOrderSuccess;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by wuliang on 2017/3/6.
@@ -65,13 +69,26 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 startActivity(intent);
                 finish();
                 LocalConfiguration.isVoucher=-1;
-            }else {
-                Bundle bundle = new Bundle();
-                bundle.putString("order", LocalConfiguration.orderNum);
-                Intent intent = new Intent(this, OrderSurcessActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+            }else if (LocalConfiguration.isVoucher==2){
+                EventBus.getDefault().post(new MessageEvent("success", "yes"));//发送给BindCard
+                LocalConfiguration.isVoucher=-1;
                 finish();
+            }else {
+                if (LocalConfiguration.ordertype == 0) {//电影票订单
+                    Bundle bundle = new Bundle();
+                    bundle.putString("order", LocalConfiguration.orderNum);
+                    Intent intent = new Intent(this, OrderSurcessActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                }else {//食品订单
+                    Bundle bundle = new Bundle();
+                    bundle.putString("order", LocalConfiguration.orderNum);
+                    Intent intent = new Intent(this, ProdectOrderSuccess.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
         } else if (errCode == -1) {

@@ -32,6 +32,7 @@ public class PaysuccessActivity extends BaseActivity implements View.OnClickList
     Button backHome;
     @Bind(R.id.teeee)
     TextView teeee;
+
     private String cardcode;
     @Override
     protected int getLayout() {
@@ -48,6 +49,7 @@ public class PaysuccessActivity extends BaseActivity implements View.OnClickList
             if(LocalConfiguration.isShouye.equals("1")){
                 teeee.setText("充值成功");
                 backHome.setText("返回");
+                orderMessage.setText("充值记录");
             }else {
                 teeee.setText("订单支付成功！");
                 backHome.setText("返回首页");

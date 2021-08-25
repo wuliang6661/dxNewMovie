@@ -11,6 +11,8 @@ public class RechatBo implements Serializable {
     private  String realPrice;
     private  String rechargeMoney;
 
+    private String description;
+
     public String getRechargeMoney() {
         return rechargeMoney;
     }
@@ -41,5 +43,13 @@ public class RechatBo implements Serializable {
 
     public void setRealPrice(String realPrice) {
         this.realPrice = realPrice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

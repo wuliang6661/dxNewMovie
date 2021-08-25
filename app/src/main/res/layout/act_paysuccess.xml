@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="73dp"
             android:layout_height="79dp"
-            android:background="@drawable/zhifuchenggong" />
+            android:background="@mipmap/pay_success" />
         <TextView
             android:id="@+id/teeee"
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_marginLeft="28dp"
             android:layout_marginRight="34dp"
             android:layout_weight="1"
-            android:background="@drawable/button_bule"
+            android:background="@drawable/button_orange"
             android:text="返回首页"
             android:textColor="@color/white"
             android:textSize="16dp" />
@@ -46,8 +46,8 @@
             android:layout_height="37dp"
             android:layout_marginRight="28dp"
             android:layout_weight="1"
-            android:background="@drawable/button_yello"
-            android:text="充值记录"
+            android:background="@drawable/button_new_yellow"
+            android:text="订单详情"
             android:textColor="@color/white"
             android:textSize="16dp" />
 

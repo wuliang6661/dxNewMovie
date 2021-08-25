@@ -1,10 +1,8 @@
 package com.myp.cinema.ui.main.home.movieslist;
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
+import com.myp.cinema.entity.ActivityBO;
 import com.myp.cinema.entity.LunBoAndBO;
-import com.myp.cinema.entity.LunBoBO;
 import com.myp.cinema.entity.MoviesByCidBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
 
@@ -62,7 +60,7 @@ public class MoviesListPresenter extends BasePresenterImpl<MoviesListContract.Vi
             public void onError(Throwable e) {
                 if (mView == null)
                     return;
-                mView.onRequestError(e.getMessage());
+//                mView.onRequestError(e.getMessage());
             }
 
             @Override
@@ -70,6 +68,32 @@ public class MoviesListPresenter extends BasePresenterImpl<MoviesListContract.Vi
                 if (mView == null)
                     return;
                 mView.getLunBo(lunBoAndBOs);
+            }
+        });
+    }
+
+    @Override
+    public void loadActivity(String cinemaId) {
+        HttpInterfaceIml.getActivity(cinemaId).subscribe(new Subscriber<ActivityBO>() {
+            @Override
+            public void onCompleted() {
+                if (mView == null)
+                    return;
+                mView.onRequestEnd();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (mView == null)
+                    return;
+//                mView.onRequestError(e.getMessage());
+            }
+
+            @Override
+            public void onNext(ActivityBO activityBO) {
+                if (mView == null)
+                    return;
+                mView.getActivity(activityBO);
             }
         });
     }

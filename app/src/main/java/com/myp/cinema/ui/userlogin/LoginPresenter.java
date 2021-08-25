@@ -1,14 +1,10 @@
 package com.myp.cinema.ui.userlogin;
 
 
-import android.util.Log;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.BasePresenterImpl;
-
-import java.util.List;
 
 import rx.Subscriber;
 

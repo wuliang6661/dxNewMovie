@@ -1,11 +1,8 @@
 package com.myp.cinema.ui.selectorcity;
 
-import android.content.Context;
-
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.entity.CityBO;
 import com.myp.cinema.mvp.BasePresenterImpl;
-import com.myp.cinema.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;

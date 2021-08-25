@@ -120,7 +120,13 @@ public class ApiManager {
                 if (post != null && post.length != 0) {
                     for (String param : post) {
                         String key = param.split("=")[0];
-                        String value = param.split("=")[1];
+                        String value;
+                        try {
+                            value = param.split("=")[1];
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            value = "";
+                        }
                         keyAndValues.put(key, value);
                     }
                 }

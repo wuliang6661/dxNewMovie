@@ -3,7 +3,6 @@ package com.myp.cinema.ui.userregister;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
 
 /**
  * MVPPlugin
@@ -21,9 +20,9 @@ public class RegisterContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void loadVersition(String phone);
+        void loadVersition(String phone,String verifycode);
 
-        void loadRegisterUser(String phone, String password, String version, String sex);
+        void loadRegisterUser(String cinemaId,String phone, String password, String version, String sex);
 
     }
 }

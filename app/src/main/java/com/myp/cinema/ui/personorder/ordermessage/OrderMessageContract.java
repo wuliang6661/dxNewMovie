@@ -1,14 +1,8 @@
 package com.myp.cinema.ui.personorder.ordermessage;
 
-import android.content.Context;
-
-import com.myp.cinema.entity.Bean;
-import com.myp.cinema.entity.OrderMessageBO;
+import com.myp.cinema.entity.OrderDetailBO;
 import com.myp.cinema.mvp.BasePresenter;
 import com.myp.cinema.mvp.BaseRequestView;
-import com.myp.cinema.mvp.BaseView;
-
-import java.util.List;
 
 /**
  * MVPPlugin
@@ -18,11 +12,14 @@ import java.util.List;
 public class OrderMessageContract {
     interface View extends BaseRequestView {
 
-        void getOrderMessageList(Bean orderMessage);
+        void getOrderMessage(OrderDetailBO orderMessage);
     }
 
     interface Presenter extends BasePresenter<View> {
 
-        void loadOrderMessage(String id, String cinemaId );
+        /**
+         * 查询订单详情
+         */
+        void quryOrderMessage(String id, String cinemaId);
     }
 }

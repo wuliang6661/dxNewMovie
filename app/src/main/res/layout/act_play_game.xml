@@ -5,7 +5,8 @@
     android:background="@color/act_bg01"
     android:orientation="vertical">
 
-    <include layout="@layout/header_layout02" />
+    <include android:id="@+id/titleLayout"
+        layout="@layout/header_layout02" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -30,6 +30,7 @@ public class CardBO implements Serializable{
     private String cardType;
     private String period;
     private String username;
+    private String id;
 
     public String getAvailableJifen() {
         return availableJifen;
@@ -93,5 +94,13 @@ public class CardBO implements Serializable{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.myp.cinema"
         minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 12
-        versionName "1.4.2"
+        targetSdkVersion 27
+        versionCode  40
+        versionName "2.1.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
 
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -26,7 +27,7 @@ android {
     //签名
     signingConfigs {
         release {// 自己的签名文件
-            storeFile file("E:/德信包密匙/cinema.jks")
+            storeFile rootProject.file('cinema.jks')
             storePassword "123456"
             keyAlias "cinema"
             keyPassword "123456"
@@ -69,55 +70,6 @@ android {
         abortOnError false
     }
 
-//    buildTypes {
-//        debug {
-//            // 显示Log
-//            buildConfigField "boolean", "LOG_DEBUG", "true"
-//            versionNameSuffix "-debug"
-//            minifyEnabled false
-//            zipAlignEnabled false
-//            shrinkResources false
-//            signingConfig signingConfigs.debug
-//        }
-//
-//        release {
-//            // 不显示Log
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
-//            //混淆
-//            minifyEnabled true
-//            //Zipalign优化
-//            zipAlignEnabled true
-//
-//            // 移除无用的resource文件
-//            shrinkResources true
-//            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            //签名
-//            signingConfig signingConfigs.release
-//
-//            applicationVariants.all { variant ->
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        // 输出apk名称为app_v1.0_2015-xx-xx_xxxx.apk
-//                        def fileName = "app_v${defaultConfig.versionName}_${releaseTime()}.apk"
-////                        def fileName = "app_v${defaultConfig.versionName}.apk"
-//                        output.outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
-//            }
-//        }
-//    }
-    //渠道Flavors，配置不同风格的app,友盟渠道统计时用到
-//    productFlavors {
-//        "offical" {}
-//        "360" {}
-//        "yingyongbao" {}
-//        "wandoujia" {}
-//        "baidu" {}
-//        "91" {}
-//    }
-
 }
 
 allprojects {
@@ -133,59 +85,66 @@ def releaseTime() {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.alibaba:fastjson:1.2.16'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:palette-v7:25.0.1'
-    compile 'com.android.support:cardview-v7:25.0.1'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-components:0.8.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.7.0'
-    compile 'cat.ereza:customactivityoncrash:1.5.0'
-    compile 'com.github.paolorotolo:appintro:4.1.0'
-    compile 'com.aurelhubert:ahbottomnavigation:1.5.1'
-    compile files('libs/multiwindow-v1.3.2.jar')
-    compile files('libs/sdk-v1.0.0.jar')
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.2'
-    compile 'io.reactivex:rxnetty:0.5.1'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
-    compile 'cn.jiguang.sdk:jpush:3.0.8'  // 此处以JPush 3.0.1 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.6'  // 此处以JCore 1.1.0 版本为例。
-    compile 'com.xyz.tabitem:tabitem:1.0.2'  //首页底部选项条控件
-    compile 'com.github.donkingliang:CustomBanner:1.1.0'  //轮播图控件
-    compile 'com.github.ithedan:TextViewDrawable:v1.0'
-    compile 'com.mostafagazar:customshapeimageview:1.0.4'
-    compile 'com.baoyz.actionsheet:library:1.1.5'
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
-    compile 'com.bigkoo:alertview:1.0.3'   //仿ios的各种弹窗
-    compile 'com.hedgehog.ratingbar:app:1.1.2'
-    compile('github.hellocsl:GalleryLayoutManager:1.0.4') {   //选择电影的画廊视图
+    implementation 'com.alibaba:fastjson:1.2.16'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:palette-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.jakewharton:butterknife:7.0.1'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.1.6'
+    implementation 'com.trello:rxlifecycle:0.8.0'
+    implementation 'com.trello:rxlifecycle-components:0.8.0'
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.okhttp:okhttp:2.7.0'
+    implementation 'cat.ereza:customactivityoncrash:1.5.0'
+    implementation 'com.github.paolorotolo:appintro:4.1.0'
+    implementation 'com.aurelhubert:ahbottomnavigation:1.5.1'
+    implementation files('libs/multiwindow-v1.3.2.jar')
+    implementation files('libs/sdk-v1.0.0.jar')
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.2'
+    implementation 'io.reactivex:rxnetty:0.5.1'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
+    implementation 'cn.jiguang.sdk:jpush:3.0.8'  // 此处以JPush 3.0.1 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.1.6'  // 此处以JCore 1.1.0 版本为例。
+    implementation 'com.xyz.tabitem:tabitem:1.0.2'  //首页底部选项条控件
+    implementation 'com.github.donkingliang:CustomBanner:1.1.0'  //轮播图控件
+    implementation 'com.github.ithedan:TextViewDrawable:v1.0'
+    implementation 'com.mostafagazar:customshapeimageview:1.0.4'
+    implementation 'com.baoyz.actionsheet:library:1.1.5'
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
+    implementation 'com.bigkoo:alertview:1.0.3'   //仿ios的各种弹窗
+    implementation 'com.hedgehog.ratingbar:app:1.1.2'
+    implementation('github.hellocsl:GalleryLayoutManager:1.0.4') {   //选择电影的画廊视图
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
-    compile 'com.bigkoo:svprogresshud:1.0.6'
-    compile 'com.afollestad:easyvideoplayer:0.3.0'  //视频播放库
-    compile 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'//城市列表
-    compile 'com.airbnb.android:lottie:2.1.0'   //将json转为动画显示
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.zxing:core:3.2.1'      //zxing核心依赖
-    compile 'com.journeyapps:zxing-android-embedded:3.3.0'  //生成二维码依赖
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    compile 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.bigkoo:svprogresshud:1.0.6'
+    implementation 'com.afollestad:easyvideoplayer:0.3.0'  //视频播放库
+    implementation 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'//城市列表
+    implementation 'com.airbnb.android:lottie:2.1.0'   //将json转为动画显示
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.google.zxing:core:3.2.1'      //zxing核心依赖
+    implementation 'com.journeyapps:zxing-android-embedded:3.3.0'  //生成二维码依赖
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.zhy:base-rvadapter:3.0.3'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
+    implementation project(path: ':swipebacklib')
+    implementation 'com.zhy:okhttputils:2.6.2'
+    //版本更新
+    implementation 'com.github.xuexiangjys:XUpdate:1.1.6'
 }

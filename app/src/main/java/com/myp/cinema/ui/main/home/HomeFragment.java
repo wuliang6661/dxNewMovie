@@ -1,15 +1,24 @@
 package com.myp.cinema.ui.main.home;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -22,10 +31,13 @@ import com.myp.cinema.base.BaseFragment;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.CinemaBo;
 import com.myp.cinema.ui.FragmentPaerAdapter;
+import com.myp.cinema.ui.InfoActivity;
 import com.myp.cinema.ui.main.home.movieslist.MoviesListFragment;
 import com.myp.cinema.ui.main.home.nextmovies.NextMoviesFragment;
 import com.myp.cinema.ui.moviesseltor.SeltormovieActivity;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.SPUtils;
+import com.myp.cinema.util.ScreenUtils;
 import com.myp.cinema.util.viewpager.CustomViewPager;
 
 import java.util.ArrayList;
@@ -63,8 +75,7 @@ public class HomeFragment extends BaseFragment implements
     NextMoviesFragment nextMoviesFragment;
     List<Fragment> list;
 
-    List<CinemaBo> cinemaIdBOs;
-
+    CinemaBo cinemaIdBOs;
 
     @Nullable
     @Override
@@ -78,7 +89,6 @@ public class HomeFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         listFragment = new MoviesListFragment();
         nextMoviesFragment = new NextMoviesFragment();
         list = new ArrayList<>();
@@ -88,6 +98,10 @@ public class HomeFragment extends BaseFragment implements
         viewpager.setAdapter(adapter);
         viewpager.setScanScroll(false);
         setListener();
+        if (MyApplication.spUtils.getString("read") == null
+                || !MyApplication.spUtils.getString("read").equals("yes")) {
+            infoDialog();
+        }
     }
 
     /**
@@ -147,6 +161,18 @@ public class HomeFragment extends BaseFragment implements
                 CinemaBo cinemaBo = (CinemaBo) data.getSerializableExtra("ciname");
                 cinemaName.setText(cinemaBo.getCinemaName());
                 MyApplication.cinemaBo = cinemaBo;
+
+                if (MyApplication.showCinemaId.size() == 0) {
+                    MyApplication.isActivityPicShow = true;
+                    MyApplication.showCinemaId .add(cinemaBo.getCinemaId());
+                }else {
+                    if (MyApplication.showCinemaId.contains(cinemaBo.getCinemaId())){
+                        MyApplication.isActivityPicShow = false;
+                    }else {
+                        MyApplication.isActivityPicShow = true;
+                        MyApplication.showCinemaId .add(cinemaBo.getCinemaId());
+                    }
+                }
                 listFragment.setCinemaBo(cinemaBo);
                 nextMoviesFragment.setCinemaBo(cinemaBo);
                 break;
@@ -180,20 +206,154 @@ public class HomeFragment extends BaseFragment implements
     }
 
 
-    public void setCinemaNameStr(List<CinemaBo> cinemaNameStr) {
+//    public void setCinemaNameStr(List<CinemaBo> cinemaNameStr) {
+//        this.cinemaIdBOs = cinemaNameStr;
+//        if (cinemaIdBOs != null && cinemaIdBOs.size() != 0) {
+//            cinemaName.setVisibility(View.VISIBLE);
+//            progress.setVisibility(View.GONE);
+//            cinemaName.setText(cinemaNameStr.get(0).getCinemaName());
+//            MyApplication.cinemaBo = cinemaNameStr.get(0);
+//            listFragment.setCinemaBo(cinemaNameStr.get(0));
+//            nextMoviesFragment.setCinemaBo(cinemaNameStr.get(0));
+//        } else {
+//            cinemaName.setVisibility(View.VISIBLE);
+//            progress.setVisibility(View.GONE);
+//            cinemaName.setText("选择城市");
+//            LogUtils.showToast("当前城市暂无影院信息！");
+//        }
+//    }
+
+    public void setCinemaNameStr(CinemaBo cinemaNameStr) {
         this.cinemaIdBOs = cinemaNameStr;
-        if (cinemaIdBOs != null && cinemaIdBOs.size() != 0) {
+        if (cinemaIdBOs != null) {
             cinemaName.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
-            cinemaName.setText(cinemaNameStr.get(0).getCinemaName());
-            MyApplication.cinemaBo = cinemaNameStr.get(0);
-            listFragment.setCinemaBo(cinemaNameStr.get(0));
-            nextMoviesFragment.setCinemaBo(cinemaNameStr.get(0));
+            cinemaName.setText(cinemaNameStr.getCinemaName());
+            MyApplication.cinemaBo = cinemaNameStr;
+            if (MyApplication.showCinemaId.size() == 0) {
+                MyApplication.isActivityPicShow = true;
+                MyApplication.showCinemaId .add(cinemaNameStr.getCinemaId());
+            }else {
+                if (MyApplication.showCinemaId.contains(cinemaNameStr.getCinemaId())){
+                    MyApplication.isActivityPicShow = false;
+                }else {
+                    MyApplication.isActivityPicShow = true;
+                    MyApplication.showCinemaId .add(cinemaNameStr.getCinemaId());
+                }
+            }
+            listFragment.setCinemaBo(cinemaNameStr);
+            nextMoviesFragment.setCinemaBo(cinemaNameStr);
         } else {
             cinemaName.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
             cinemaName.setText("选择城市");
             LogUtils.showToast("当前城市暂无影院信息！");
         }
+    }
+
+    public void setCinemaInfo(){
+        cinemaName.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
+        cinemaName.setText(MyApplication.cinemaBo.getCinemaName());
+        MyApplication.isActivityPicShow = false;
+        if (MyApplication.showCinemaId.size() == 0) {
+            MyApplication.isActivityPicShow = true;
+            MyApplication.showCinemaId .add(MyApplication.cinemaBo.getCinemaId());
+        }else {
+            if (MyApplication.showCinemaId.contains(MyApplication.cinemaBo.getCinemaId())){
+                MyApplication.isActivityPicShow = false;
+            }else {
+                MyApplication.isActivityPicShow = true;
+                MyApplication.showCinemaId .add(MyApplication.cinemaBo.getCinemaId());
+            }
+        }
+        listFragment.setCinemaBo(MyApplication.cinemaBo);
+        nextMoviesFragment.setCinemaBo(MyApplication.cinemaBo);
+    }
+
+
+    /**
+     *  协议
+     */
+    private void infoDialog() {
+        // 构造对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AlertDialog);
+        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View v = inflater.inflate(R.layout.information_dialog_layout, null);
+        TextView cancle = v.findViewById(R.id.cancle);
+        TextView sure = v.findViewById(R.id.sure);
+        TextView txt = v.findViewById(R.id.txt2);
+
+        // SpannableStringBuilder 用法
+        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder();
+        spannableBuilder.append(txt.getText().toString());
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(getActivity(), InfoActivity.class);
+                startActivity(intent);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+//                设定的是span超链接的文本颜色，而不是点击后的颜色
+                ds.setColor(Color.parseColor("#009FFF"));
+                ds.setUnderlineText(false);    //去除超链接的下划线
+                ds.clearShadowLayer();//清除阴影
+            }
+
+        };
+        spannableBuilder.setSpan(clickableSpan, 0, 12, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan2 = new ClickableSpan() {//隐私声明
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(getActivity(), InfoActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+//                设定的是span超链接的文本颜色，而不是点击后的颜色
+                ds.setColor(Color.parseColor("#009FFF"));
+                ds.setUnderlineText(false);    //去除超链接的下划线
+                ds.clearShadowLayer();//清除阴影
+            }
+
+        };
+        spannableBuilder.setSpan(clickableSpan2, 14, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txt.setText(spannableBuilder);
+        txt.setHighlightColor(getResources().getColor(android.R.color.transparent));//点击后的背景颜色，Android4.0以上默认是淡绿色，低版本的是黄色
+        txt.setMovementMethod(LinkMovementMethod.getInstance());
+
+        builder.setView(v);
+        builder.setCancelable(true);
+        final Dialog noticeDialog = builder.create();
+        noticeDialog.getWindow().setGravity(Gravity.CENTER);
+        noticeDialog.setCancelable(false);
+        noticeDialog.show();
+
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noticeDialog.dismiss();
+                System.exit(0);
+            }
+        });
+
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noticeDialog.dismiss();
+                MyApplication.spUtils.put("read", "yes");
+            }
+        });
+
+        WindowManager.LayoutParams layoutParams = noticeDialog.getWindow().getAttributes();
+        layoutParams.width = (int)(ScreenUtils.getScreenWidth()*0.75);
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        noticeDialog.getWindow().setAttributes(layoutParams);
     }
 }

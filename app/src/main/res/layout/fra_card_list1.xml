@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f5f5"
     android:orientation="vertical">
-    <include layout="@layout/header_layout02" />
+    <include
+        android:id="@+id/mtitle"
+        layout="@layout/header_layout02" />
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:id="@+id/rlBindCard"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@mipmap/new_bind_card">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="绑定会员卡"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="76dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlOpenCard"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@mipmap/new_open_card">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="开通会员卡"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="76dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
     <ScrollView
         android:id="@+id/sc"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/mtitle"
+        android:layout_above="@id/llBottom"
+        android:visibility="gone">
         <LinearLayout
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -24,6 +68,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_bg" />
+
+            <TextView
+                android:id="@+id/cardRules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#222222"
+                android:textSize="12sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="28dp"
+                android:text=""/>
+
             <Button
                 android:id="@+id/add_card"
                 android:layout_width="113dp"
@@ -34,34 +90,36 @@
                 android:gravity="center"
                 android:text="添加会员卡"
                 android:textColor="#32b8e8"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </ScrollView>
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/no_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:gravity="center"
+        android:layout_below="@id/mtitle"
+        android:layout_above="@id/llBottom"
         android:orientation="vertical"
-        >
-
+        android:visibility="gone">
         <TextView
+            android:id="@+id/cardRules2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#222222"
+            android:textSize="12sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="28dp"
+            android:text=""/>
+
+        <ImageView
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="您还没有添加会员卡"
-            android:textColor="@color/text_big"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
-            android:text="添加影院会员卡、享受会员折扣价"
-            android:textColor="@color/text_small"
-            android:textSize="@dimen/text12" />
-
+            android:src="@drawable/card_normal"/>
 
         <Button
             android:id="@+id/add_card_button"
@@ -72,7 +130,9 @@
             android:gravity="center"
             android:text="添加会员卡"
             android:textColor="#32b8e8"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:visibility="gone"/>
 
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,7 +1,5 @@
 package com.myp.cinema.entity;
 
-import java.util.List;
-
 /**
  * Created by wuliang on 2017/6/16.
  * <p>

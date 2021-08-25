@@ -1,5 +1,6 @@
 package com.myp.cinema.service.update;
 
+import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +27,10 @@ import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.config.LocalConfiguration;
 import com.myp.cinema.entity.AppVersionBO;
+import com.myp.cinema.jpush.MessageEvent;
 import com.myp.cinema.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -68,6 +74,7 @@ public class UpdateManager {
     private String updateMessage;
     private int updateSign = 0;
     private String source;//login,setting
+    private int REQUEST_CODE_APP_INSTALL = 100;//判断安装未知应用权限
 
     private AppVersionBO appVersionBO;
 
@@ -217,12 +224,13 @@ public class UpdateManager {
                 minVersionCode = Integer.valueOf(appVersionBO.getAndroid().getMinVersionCode());
                 minVersionName = appVersionBO.getAndroid().getMinVersionName();
                 // 版本判断
-                if (serverVersionCode > currentVersionCode) {//可选择更新
-                    showUpdateDialog();
-                    return;
-                }
+
                 if (minVersionCode > currentVersionCode) {//必须更新
                     showMustUpdateDialog();
+                    return;
+                }
+                if (serverVersionCode > currentVersionCode) {//可选择更新
+                    showUpdateDialog();
                     return;
                 }
             }
@@ -300,6 +308,8 @@ public class UpdateManager {
         builder.setTitle("软件更新");
         StringBuilder message = new StringBuilder();
         message.append("当前版本过低，必须升级才能继续使用！");
+        message.append("\n新特性:\n");
+        message.append(updateMessage);
         builder.setMessage(message.toString());
         builder.setCancelable(false);
         // 更新
@@ -467,12 +477,20 @@ public class UpdateManager {
     /**
      * 安装 apk 文件
      */
-    private void installApk() {
+    public void installApk() {
         File apkfile = new File(mSavePath, LocalConfiguration.appFileName);
         if (!apkfile.exists()) {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean hasInstallPermission = isHasInstallPermissionWithO(mContext);
+            if (!hasInstallPermission) {
+//                startInstallPermissionSettingActivity(mContext);
+                EventBus.getDefault().post(new MessageEvent("update", "yes"));
+                return;
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             Uri contentUri = FileProvider.getUriForFile(mContext, "com.myp.cinema.fileprovider", apkfile);
@@ -484,5 +502,13 @@ public class UpdateManager {
         if (mContext.getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
             mContext.startActivity(intent);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isHasInstallPermissionWithO(Context context){
+        if (context == null){
+            return false;
+        }
+        return context.getPackageManager().canRequestPackageInstalls();
     }
 }
