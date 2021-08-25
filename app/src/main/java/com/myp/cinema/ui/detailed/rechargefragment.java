@@ -3,6 +3,7 @@ package com.myp.cinema.ui.detailed;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 
 import com.myp.cinema.R;
@@ -13,7 +14,7 @@ import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.support.annotation.Nullable;
@@ -84,13 +85,13 @@ public class rechargefragment extends MVPBaseFragment<rechargefragmenteContract.
                 refreshlayout.finishRefresh(2000);
             }
         });
-        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(@NonNull RefreshLayout refreshlayout) {
                 page++;
                 mPresenter.loadRecharge(page,cardNum);
-                smartRefreshLayout.finishLoadmore(1000);
-                refreshlayout.finishLoadmore(2000);
+                smartRefreshLayout.finishLoadMore(1000);
+                refreshlayout.finishLoadMore(2000);
             }
         });
     }

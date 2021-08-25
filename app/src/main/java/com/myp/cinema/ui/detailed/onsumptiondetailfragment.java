@@ -2,6 +2,7 @@ package com.myp.cinema.ui.detailed;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -83,13 +84,13 @@ public class onsumptiondetailfragment extends MVPBaseFragment<onsumptiondetailCo
                 refreshlayout.finishRefresh(2000);
             }
         });
-        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
                 mPresenter.loadcosumption(page,cardNum);
-                smartRefreshLayout.finishLoadmore(1000);
-                refreshlayout.finishLoadmore(2000);
+                smartRefreshLayout.finishLoadMore(1000);
+                refreshLayout.finishLoadMore(2000);
             }
         });
     }

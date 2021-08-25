@@ -1,6 +1,7 @@
 package com.myp.cinema.ui.personcollect;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.myp.cinema.widget.superadapter.CommonAdapter;
 import com.myp.cinema.widget.superadapter.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -101,13 +102,13 @@ public class movieFragment extends MVPBaseFragment<movieContract.View, moviePres
                 refreshlayout.finishRefresh(2000);
             }
         });
-        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(@NonNull RefreshLayout refreshlayout) {
                 page++;
                 mPresenter.loadCollectMovie(MyApplication.user.getId(),page);
-                smartRefreshLayout.finishLoadmore(1000);
-                refreshlayout.finishLoadmore(2000);
+                smartRefreshLayout.finishLoadMore(1000);
+                refreshlayout.finishLoadMore(2000);
             }
         });
     }

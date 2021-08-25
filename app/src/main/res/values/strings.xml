@@ -180,4 +180,7 @@
 \u30008.2用户对于本应用的通知应当通过本应用对外正式公布的通信地址、电子邮件地址等联系信息进行送达。\n</string>
 
 
+    <string name="evp_submit">SUBMIT</string>
+    <string name="evp_retry">RETRY</string>
+
 </resources>

@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.afollestad.easyvideoplayer.EasyVideoCallback;
-import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.myp.cinema.R;
 import com.myp.cinema.base.BaseActivity;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.widget.easyvideoplayer.EasyVideoCallback;
+import com.myp.cinema.widget.easyvideoplayer.EasyVideoPlayer;
 
 import butterknife.Bind;
 

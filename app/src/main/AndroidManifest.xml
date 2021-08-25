@@ -37,6 +37,8 @@
         android:launchMode="singleInstance"
         android:networkSecurityConfig="@xml/network_security_config"
         android:persistent="true"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="Google"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
