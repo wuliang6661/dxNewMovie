@@ -4,7 +4,7 @@ package com.myp.cinema.ui.userregister;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,7 +23,6 @@ import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.MD5;
-import com.myp.cinema.util.RegexUtils;
 import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.util.ToastUtils;
 

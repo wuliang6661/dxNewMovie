@@ -1,7 +1,7 @@
 package com.myp.cinema.ui.detailsofrefund;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.TextView;
 
 import com.myp.cinema.R;

@@ -83,11 +83,11 @@
         android:layout_below="@id/header"
         android:layout_above="@id/llBottom">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
             <!-- 小食布局 -->
             <LinearLayout
                 android:id="@+id/llProdect"
@@ -174,7 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:background="#EFEFEF"
                         android:id="@+id/rvLeft"
                         android:layout_width="0dp"
@@ -190,7 +190,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </com.myp.cinema.widget.VpSwipeRefreshLayout>
 
     <RelativeLayout

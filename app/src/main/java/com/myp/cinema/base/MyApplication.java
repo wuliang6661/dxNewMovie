@@ -1,12 +1,15 @@
 package com.myp.cinema.base;
 
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.multidex.MultiDex;
 import android.widget.Toast;
+
+import androidx.multidex.MultiDex;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.myp.cinema.config.ConditionEnum;
@@ -38,10 +41,9 @@ import com.xuexiang.xupdate.utils.UpdateUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
-
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 
 /**
@@ -79,7 +81,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        CustomActivityOnCrash.install(this);
+        CustomActivityOnCrash.install(this);
 //        CustomActivityOnCrash.setErrorActivityClass(LoginActivity.class);
 //        CustomActivityOnCrash.setShowErrorDetails(true);
 //        CustomActivityOnCrash.setDefaultErrorActivityDrawable(R.drawable.logo);

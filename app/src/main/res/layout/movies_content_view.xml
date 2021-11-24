@@ -177,7 +177,7 @@
             </RelativeLayout>
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -236,7 +236,7 @@
             </RelativeLayout>
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyle_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -295,7 +295,7 @@
             </RelativeLayout>
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyle_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -353,7 +353,7 @@
             </RelativeLayout>
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyle_critic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

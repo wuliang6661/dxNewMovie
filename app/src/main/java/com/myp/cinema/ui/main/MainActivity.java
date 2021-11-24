@@ -4,23 +4,34 @@ package com.myp.cinema.ui.main;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterface;
@@ -29,7 +40,7 @@ import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.CinemaBo;
 import com.myp.cinema.jpush.MessageEvent;
 import com.myp.cinema.mvp.MVPBaseActivity;
-import com.myp.cinema.service.update.UpdateManager;
+import com.myp.cinema.ui.InfoActivity;
 import com.myp.cinema.ui.hotsellprodect.HotSellFragment;
 import com.myp.cinema.ui.main.home.HomeFragment;
 import com.myp.cinema.ui.main.hotwire.HotwireFragment;
@@ -39,6 +50,7 @@ import com.myp.cinema.ui.moviesseltor.SeltormovieActivity;
 import com.myp.cinema.util.AppManager;
 import com.myp.cinema.util.CustomUpdateParser;
 import com.myp.cinema.util.LogUtils;
+import com.myp.cinema.util.ScreenUtils;
 import com.myp.cinema.util.ToastUtils;
 import com.myp.cinema.util.baidumap.BaiduMapLoctionUtils;
 import com.xuexiang.xupdate.XUpdate;
@@ -111,7 +123,6 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         product.setOnClickListener(this);
         huiyuan.setOnClickListener(this);
         baiduMapLoctionUtils = new BaiduMapLoctionUtils();
-        getPermission();
 //        updateManager = new UpdateManager(this, "main");   //检查更新
 //        updateManager.checkUpdate();
         XUpdate.newBuild(this)
@@ -120,6 +131,10 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 .update();
         EventBus.getDefault().register(this);
         loadCinemas();
+        if (MyApplication.spUtils.getString("read") == null
+                || !MyApplication.spUtils.getString("read").equals("yes")) {
+            infoDialog();
+        }
     }
 
     @Override
@@ -464,6 +479,93 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             }
         }
+    }
+
+
+    /**
+     *  协议
+     */
+    private void infoDialog() {
+        // 构造对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialog);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.information_dialog_layout, null);
+        TextView cancle = v.findViewById(R.id.cancle);
+        TextView sure = v.findViewById(R.id.sure);
+        TextView txt = v.findViewById(R.id.txt2);
+
+        // SpannableStringBuilder 用法
+        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder();
+        spannableBuilder.append(txt.getText().toString());
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(intent);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+//                设定的是span超链接的文本颜色，而不是点击后的颜色
+                ds.setColor(Color.parseColor("#009FFF"));
+                ds.setUnderlineText(false);    //去除超链接的下划线
+                ds.clearShadowLayer();//清除阴影
+            }
+
+        };
+        spannableBuilder.setSpan(clickableSpan, 0, 12, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan2 = new ClickableSpan() {//隐私声明
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+//                设定的是span超链接的文本颜色，而不是点击后的颜色
+                ds.setColor(Color.parseColor("#009FFF"));
+                ds.setUnderlineText(false);    //去除超链接的下划线
+                ds.clearShadowLayer();//清除阴影
+            }
+
+        };
+        spannableBuilder.setSpan(clickableSpan2, 14, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txt.setText(spannableBuilder);
+        txt.setHighlightColor(getResources().getColor(android.R.color.transparent));//点击后的背景颜色，Android4.0以上默认是淡绿色，低版本的是黄色
+        txt.setMovementMethod(LinkMovementMethod.getInstance());
+
+        builder.setView(v);
+        builder.setCancelable(true);
+        final Dialog noticeDialog = builder.create();
+        noticeDialog.getWindow().setGravity(Gravity.CENTER);
+        noticeDialog.setCancelable(false);
+        noticeDialog.show();
+
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noticeDialog.dismiss();
+                System.exit(0);
+            }
+        });
+
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noticeDialog.dismiss();
+                MyApplication.spUtils.put("read", "yes");
+                getPermission();
+            }
+        });
+
+        WindowManager.LayoutParams layoutParams = noticeDialog.getWindow().getAttributes();
+        layoutParams.width = (int)(ScreenUtils.getScreenWidth()*0.75);
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        noticeDialog.getWindow().setAttributes(layoutParams);
     }
 
 }

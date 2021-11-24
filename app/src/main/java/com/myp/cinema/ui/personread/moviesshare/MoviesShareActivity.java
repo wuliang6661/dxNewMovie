@@ -2,7 +2,7 @@ package com.myp.cinema.ui.personread.moviesshare;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.myp.cinema.R;
 import com.myp.cinema.mvp.MVPBaseActivity;

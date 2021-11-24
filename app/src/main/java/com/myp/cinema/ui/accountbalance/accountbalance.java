@@ -3,14 +3,13 @@ package com.myp.cinema.ui.accountbalance;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
@@ -18,10 +17,7 @@ import com.myp.cinema.base.BaseActivity;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.BaseBO;
 import com.myp.cinema.entity.CardBO;
-import com.myp.cinema.entity.LunBoAndBO;
-import com.myp.cinema.entity.OpenCardBO;
 import com.myp.cinema.ui.detailed.detailed;
-import com.myp.cinema.ui.personorder.PersonOrderActivity;
 import com.myp.cinema.util.ToastUtils;
 
 import butterknife.Bind;

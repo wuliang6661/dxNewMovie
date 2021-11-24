@@ -41,6 +41,9 @@
         android:appComponentFactory="Google"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <activity
             android:name=".ui.InfoActivity"
             android:launchMode="standard"
@@ -304,7 +307,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Mike" /> <!-- 兼容部分手机自动更新安装apk失败 -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.myp.cinema.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

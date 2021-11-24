@@ -3,7 +3,7 @@ package com.myp.cinema.widget.pulltozoomview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;

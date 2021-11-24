@@ -3,7 +3,7 @@ package com.myp.cinema.ui;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;

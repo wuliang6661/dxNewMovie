@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/food_yes"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/prodectList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_marginStart="67dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/white">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <ImageView
             android:id="@+id/ivProdectState"

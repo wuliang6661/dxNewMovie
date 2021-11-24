@@ -2,7 +2,7 @@ package com.myp.cinema.ui.main.home.nextmovies;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import com.myp.cinema.entity.CinemaBo;
 import com.myp.cinema.entity.MoviesSoonBO;
 import com.myp.cinema.mvp.MVPBaseFragment;
 import com.myp.cinema.ui.moviespresell.PresellMoviesActivity;
-import com.myp.cinema.util.LogUtils;
 import com.myp.cinema.util.TimeUtils;
 import com.myp.cinema.widget.expandlist.adapter.DockingExpandableListViewAdapter;
 import com.myp.cinema.widget.expandlist.controller.IDockingHeaderUpdateListener;

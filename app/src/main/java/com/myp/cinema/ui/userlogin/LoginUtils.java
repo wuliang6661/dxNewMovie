@@ -27,7 +27,7 @@ public class LoginUtils {
     public LoginUtils(Activity context) {
         this.context = context;
         //初始化qq主操作对象
-        mTencent = Tencent.createInstance(LocalConfiguration.QQ_APP_ID, context);
+        mTencent = Tencent.createInstance(LocalConfiguration.QQ_APP_ID, context.getApplicationContext(), "com.myp.cinema.fileprovider");
         //要所有权限，不然会再次申请增量权限，这里不要设置成get_user_info,add_t
         scope = "all";
     }
@@ -87,6 +87,11 @@ public class LoginUtils {
         @Override
         public void onCancel() {
         }
+
+        @Override
+        public void onWarning(int i) {
+
+        }
     };
 
     IUiListener userInfoListener = new IUiListener() {
@@ -128,6 +133,11 @@ public class LoginUtils {
 
         @Override
         public void onCancel() {
+        }
+
+        @Override
+        public void onWarning(int i) {
+
         }
     };
 }

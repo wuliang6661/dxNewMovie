@@ -2,7 +2,7 @@ package com.myp.cinema.ui.userforwordpass;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +15,6 @@ import com.myp.cinema.base.BaseActivity;
 import com.myp.cinema.entity.PicVerificBO;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.util.LogUtils;
-import com.myp.cinema.util.RegexUtils;
 import com.myp.cinema.util.StringUtils;
 
 import butterknife.Bind;

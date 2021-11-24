@@ -2,7 +2,7 @@ package com.myp.cinema.ui.rechatge;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myp.cinema.R;
-import com.myp.cinema.jpush.MessageEvent;
 import com.myp.cinema.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;

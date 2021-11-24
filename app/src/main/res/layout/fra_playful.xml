@@ -14,7 +14,7 @@
 
     <include layout="@layout/header_layout02" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -153,13 +153,13 @@
                     </RelativeLayout>
 
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingLeft="@dimen/margin_top"
                         android:weightSum="3"
-                        ></android.support.v7.widget.RecyclerView>
+                        ></androidx.recyclerview.widget.RecyclerView>
 
 
                 </LinearLayout>
@@ -175,7 +175,7 @@
                     android:textColor="@color/text_big"
                     android:textSize="@dimen/text_big" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_marginTop="1dp"
                     android:id="@+id/jinbirecy"
                     android:layout_width="match_parent"
@@ -185,5 +185,5 @@
         </ScrollView>
 
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

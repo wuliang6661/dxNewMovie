@@ -2,13 +2,12 @@ package com.myp.cinema.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * Created by Witness on 2020/12/10
  * Describe:
  */
-public class AlwaysMarqueeTextView extends android.support.v7.widget.AppCompatTextView {
+public class AlwaysMarqueeTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public AlwaysMarqueeTextView(Context context) {
         super(context);

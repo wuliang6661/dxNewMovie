@@ -1,7 +1,7 @@
 package com.myp.cinema.util;
 
-import android.support.annotation.ColorInt;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.ColorInt;
+import com.google.android.material.snackbar.Snackbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;

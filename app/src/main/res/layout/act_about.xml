@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top"
-            android:text="杭州聚阵科技有限公司"
+            android:text="杭州天蝎座科技有限公司"
             android:textColor="#e7271d"
             android:textSize="@dimen/text13" />
 

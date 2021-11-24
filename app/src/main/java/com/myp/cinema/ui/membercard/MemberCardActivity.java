@@ -3,12 +3,11 @@ package com.myp.cinema.ui.membercard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
+import androidx.annotation.Nullable;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -18,7 +17,6 @@ import com.myp.cinema.R;
 import com.myp.cinema.api.HttpInterfaceIml;
 import com.myp.cinema.base.MyApplication;
 import com.myp.cinema.entity.CardBO;
-import com.myp.cinema.entity.OpenCardBO;
 import com.myp.cinema.mvp.MVPBaseActivity;
 import com.myp.cinema.ui.accountbalance.accountbalance;
 import com.myp.cinema.util.LogUtils;
