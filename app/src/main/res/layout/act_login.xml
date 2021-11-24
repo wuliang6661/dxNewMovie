@@ -55,8 +55,6 @@
             android:layout_marginTop="16dp">
 
 
-            //weixin,wx,weibo,wb,qq,qq
-
             <ImageView
                 android:id="@+id/weibo"
                 android:layout_width="30dp"
@@ -168,13 +166,47 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:button="@drawable/check_login_bg" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="请同意"
+                android:textColor="#989898"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/xieyi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="《德信影城隐私条款》"
+                android:textColor="#009FFF"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="22dp"
             android:layout_marginRight="22dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_bule"
             android:gravity="center"
             android:text="登录"

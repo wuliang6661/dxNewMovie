@@ -1,6 +1,8 @@
 package com.myp.cinema.ui.userlogin;
 
 
+import static android.R.attr.action;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,15 +11,17 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.mob.tools.utils.UIHandler;
 import com.myp.cinema.R;
@@ -26,6 +30,7 @@ import com.myp.cinema.config.ConditionEnum;
 import com.myp.cinema.entity.UserBO;
 import com.myp.cinema.entity.threelandingBo;
 import com.myp.cinema.mvp.MVPBaseActivity;
+import com.myp.cinema.ui.InfoActivity;
 import com.myp.cinema.ui.phonecode.phonecode2;
 import com.myp.cinema.ui.userforwordpass.VerifyActivity;
 import com.myp.cinema.ui.userregister.RegisterActivity;
@@ -45,8 +50,6 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
-
-import static android.R.attr.action;
 
 /**
  * MVPPlugin
@@ -75,6 +78,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     ImageView qq;
     @Bind(R.id.weixin)
     ImageView weixin;
+    @Bind(R.id.checkbox)
+    CheckBox checkBox;
+    @Bind(R.id.xieyi)
+    TextView xieyi;
 
     String phone;
     String password;
@@ -107,6 +114,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         weibo.setOnClickListener(this);
         qq.setOnClickListener(this);
         weixin.setOnClickListener(this);
+        xieyi.setOnClickListener(this);
     }
 
     @Override
@@ -187,6 +195,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 gotoActivity(VerifyActivity.class, false);
                 break;
             case R.id.weibo:    //新浪微博登陆
+                if (!checkBox.isChecked()) {
+                    LogUtils.showToast("请同意协议《德信影城隐私条款》!");
+                    return;
+                }
                 Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
                 style=1;
                 sina.setPlatformActionListener(this);
@@ -194,6 +206,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 authorize(sina, 3);
                 break;
             case R.id.qq:    //QQ登陆
+                if (!checkBox.isChecked()) {
+                    LogUtils.showToast("请同意协议《德信影城隐私条款》!");
+                    return;
+                }
                 Platform qq = ShareSDK.getPlatform(QQ.NAME);
                 style=2;
                 qq.setPlatformActionListener(this);
@@ -201,6 +217,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 authorize(qq, 2);
                 break;
             case R.id.weixin:   //微信登陆
+                if (!checkBox.isChecked()) {
+                    LogUtils.showToast("请同意协议《德信影城隐私条款》!");
+                    return;
+                }
                 if(isWeixinAvilible(this)) {
                     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
                     wechat.setPlatformActionListener(this);
@@ -210,8 +230,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 }else{
                     Toast.makeText(this, "您还没有安装微信，请先安装微信客户端",Toast.LENGTH_SHORT).show();
                 }
-
-
+                break;
+            case R.id.xieyi:
+                Bundle bundle = new Bundle();
+                gotoActivity(InfoActivity.class, bundle, false);
                 break;
         }
     }
@@ -271,6 +293,10 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         }
         if (password.length() < 6 || password.length() > 20) {
             LogUtils.showToast("密码长度要在6-20位!");
+            return false;
+        }
+        if (!checkBox.isChecked()) {
+            LogUtils.showToast("请同意协议《德信影城隐私条款》!");
             return false;
         }
         return true;

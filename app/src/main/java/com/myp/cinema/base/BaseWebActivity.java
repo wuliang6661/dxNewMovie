@@ -2,8 +2,10 @@ package com.myp.cinema.base;
 
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
+import com.myp.cinema.util.StringUtils;
 import com.myp.cinema.widget.webview.WebAppInterface;
 import com.myp.cinema.widget.webview.WebClient;
 import com.myp.cinema.widget.webview.WebViewChromeClient;
@@ -35,6 +37,9 @@ public abstract class BaseWebActivity extends BaseActivity {
         chromeClient.setOnReceivedListener(new WebViewChromeClient.onReceivedMessage() {   //设置标题
             @Override
             public void getTitle(String title) {
+                if(StringUtils.isEmpty(title) || title.startsWith("https")){
+                    return;
+                }
                 setTitle(title);
             }
         });
