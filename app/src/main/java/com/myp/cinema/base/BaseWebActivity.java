@@ -37,7 +37,7 @@ public abstract class BaseWebActivity extends BaseActivity {
         chromeClient.setOnReceivedListener(new WebViewChromeClient.onReceivedMessage() {   //设置标题
             @Override
             public void getTitle(String title) {
-                if(StringUtils.isEmpty(title) || title.startsWith("https")){
+                if (StringUtils.isEmpty(title) || title.startsWith("https") || title.startsWith("dxm")) {
                     return;
                 }
                 setTitle(title);
